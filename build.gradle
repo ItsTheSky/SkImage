@@ -1,0 +1,26 @@
+plugins {
+    id 'java'
+}
+
+group 'info.itsthesky'
+version '1.0'
+
+repositories {
+    mavenCentral()
+    maven {
+        url 'https://repo.destroystokyo.com/repository/maven-public/'
+    }
+    maven {
+        name = 'spigotmc-repo'
+        url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
+    }
+    jcenter()
+    maven {
+        url 'https://jitpack.io'
+    }
+}
+
+dependencies {
+    implementation 'com.github.SkriptLang:Skript:2.5'
+    implementation 'org.spigotmc:spigot-api:1.16.4-R0.1-SNAPSHOT'
+}
