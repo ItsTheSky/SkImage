@@ -53,7 +53,7 @@ public class ExprImageHeight extends SimpleExpression<Integer> {
 
 	@Override
 	public String toString(Event e, boolean debug) {
-		return "image height of " + exprImage.getSingle(e);
+		return "image height of " + exprImage.toString(e, debug);
 	}
 
 }

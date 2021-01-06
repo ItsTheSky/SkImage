@@ -64,7 +64,7 @@ public class ExprResizedImage extends SimpleExpression<BufferedImage> {
 
 	@Override
 	public String toString(Event e, boolean debug) {
-		return "resized image " + exprImage1.getSingle(e) + " to size " + exprSizeX.getSingle(e) + ", " + exprSizeY.getSingle(e);
+		return "resized image " + exprImage1.toString(e, debug) + " to size " + exprSizeX.toString(e, debug) + ", " + exprSizeY.toString(e, debug);
 	}
 
 	@Override

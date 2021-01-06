@@ -64,7 +64,7 @@ public class EffDrawRect extends Effect {
 
 	@Override
 	public String toString(Event e, boolean debug) {
-		return "draw rectangle on " + exprImage.getSingle(e) + " at " + exprX.getSingle(e) + ", " + exprY.getSingle(e) + " with size " + exprSizeX.getSingle(e) + ", " + exprSizeY.getSingle(e);
+		return "draw rectangle on " + exprImage.toString(e, debug) + " at " + exprX.toString(e, debug) + ", " + exprY.toString(e, debug) + " with size " + exprSizeX.toString(e, debug) + ", " + exprSizeY.toString(e, debug);
 	}
 
 }

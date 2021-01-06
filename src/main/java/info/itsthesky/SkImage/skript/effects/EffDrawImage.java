@@ -52,7 +52,7 @@ public class EffDrawImage extends Effect {
 
 	@Override
 	public String toString(Event e, boolean debug) {
-		return "draw image " + exprImage1.getSingle(e) + " on the image " + exprImage2.getSingle(e) + " at " + exprX.getSingle(e) + ", " + exprY.getSingle(e);
+		return "draw image " + exprImage1.toString(e, debug) + " on the image " + exprImage2.toString(e, debug) + " at " + exprX.toString(e, debug) + ", " + exprY.toString(e, debug);
 	}
 
 }

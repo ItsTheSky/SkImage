@@ -72,7 +72,7 @@ public class EffSaveImage extends Effect {
 
 	@Override
 	public String toString(Event e, boolean debug) {
-		return "save image " + exprImage.getSingle(e).toString() + " to path " + exprPath.toString(e, debug);
+		return "save image " + exprImage.toString(e, debug) + " to path " + exprPath.toString(e, debug);
 	}
 
 }

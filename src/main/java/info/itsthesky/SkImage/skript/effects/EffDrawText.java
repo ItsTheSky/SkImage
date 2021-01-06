@@ -61,7 +61,7 @@ public class EffDrawText extends Effect {
 
 	@Override
 	public String toString(Event e, boolean debug) {
-		return "draw text " + exprText.getSingle(e) + " on " + exprImage.getSingle(e) + " at " + exprX.getSingle(e) + ", " + exprY.getSingle(e);
+		return "draw text " + exprText.toString(e, debug) + " on " + exprImage.toString(e, debug) + " at " + exprX.toString(e, debug) + ", " + exprY.toString(e, debug);
 	}
 
 }

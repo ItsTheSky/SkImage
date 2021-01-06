@@ -69,7 +69,7 @@ public class ExprImageFromURL extends SimpleExpression<BufferedImage> {
 
 	@Override
 	public String toString(Event e, boolean debug) {
-		return "image from the url " + exprURL.getSingle(e);
+		return "image from the url " + exprURL.toString(e, debug);
 	}
 
 }
