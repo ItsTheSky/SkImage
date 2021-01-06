@@ -49,7 +49,7 @@ public class EffSetBG extends Effect {
 
 	@Override
 	public String toString(Event e, boolean debug) {
-		return "";
+		return "set background of " + exprImage.getSingle(e) + " to color " + exprColor.getSingle(e);
 	}
 
 }

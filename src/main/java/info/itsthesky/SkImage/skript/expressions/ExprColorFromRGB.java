@@ -58,7 +58,7 @@ public class ExprColorFromRGB extends SimpleExpression<Color> {
 
 	@Override
 	public String toString(Event e, boolean debug) {
-		return "";
+		return "color from rgb " + exprRed.getSingle(e) + ", " + exprGreen.getSingle(e) + ", " + exprBlue.getSingle(e);
 	}
 
 }

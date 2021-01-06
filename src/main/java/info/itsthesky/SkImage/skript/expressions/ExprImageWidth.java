@@ -54,7 +54,7 @@ public class ExprImageWidth extends SimpleExpression<Integer> {
 
 	@Override
 	public String toString(Event e, boolean debug) {
-		return "";
+		return "image width of " + exprImage.getSingle(e);
 	}
 
 }

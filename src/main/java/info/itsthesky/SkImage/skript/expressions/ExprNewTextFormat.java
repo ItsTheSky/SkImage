@@ -58,7 +58,7 @@ public class ExprNewTextFormat extends SimpleExpression<Font> {
 
 	@Override
 	public String toString(Event e, boolean debug) {
-		return "";
+		return "new text format with font name " + exprFont.getSingle(e) + " and size " + exprSize.getSingle(e);
 	}
 
 }
