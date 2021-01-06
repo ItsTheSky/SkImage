@@ -1,0 +1,7 @@
+# Here is the main configuration of SkImage
+# Made by ItsTheSky with <3
+
+# Allow SkImage to override image which already exist
+# If false, console will be warned
+# If true, the old one will be deleted and replaced by the new one
+ImageReplacement: false

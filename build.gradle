@@ -10,6 +10,8 @@ repositories {
     maven {
         url 'https://repo.destroystokyo.com/repository/maven-public/'
     }
+    maven { url 'https://jitpack.io' }
+    maven { url 'https://maven.enginehub.org/repo/' }
     maven {
         name = 'spigotmc-repo'
         url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
@@ -23,4 +25,7 @@ repositories {
 dependencies {
     implementation 'com.github.SkriptLang:Skript:2.5'
     implementation 'org.spigotmc:spigot-api:1.16.4-R0.1-SNAPSHOT'
+    implementation 'org.jetbrains:annotations:20.1.0'
+    implementation 'com.sk89q.worldguard:worldguard-bukkit:7.0.4'
+    implementation 'com.github.MilkBowl:VaultAPI:1.7'
 }
