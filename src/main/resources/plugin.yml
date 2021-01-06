@@ -1,5 +1,5 @@
 name: SkImage
 author: ItsTheSky
-version: 1.0
+version: @VERSION@
 description: Simple addon which let you create, manage and customize image.
 main: info.itsthesky.SkImage.SkImage
