@@ -55,7 +55,7 @@ public class EffSaveImage extends Effect {
 			FileConfiguration configConfig = YamlConfiguration.loadConfiguration(configFile);
 			Boolean replaceImage = configConfig.getBoolean("ImageReplacement");
 			if (!replaceImage) {
-				Skript.error("The file called " + path + " already exist!");
+				Skript.error("The file called " + path + " already exist! Disable this non-replacement in the node `ImageReplacement` from `plugins/SkImage/config.yml`");
 				return;
 			}
 			file.delete();
