@@ -12,17 +12,19 @@ import ch.njol.util.Kleenean;
 import org.bukkit.event.Event;
 
 import java.awt.*;
+import java.awt.font.TextLayout;
 import java.awt.image.BufferedImage;
 
 @Name("Draw Text on Image")
-@Description("Draw text at specific pixel location and with specific color on image")
+@Description("Draw text at specific pixel location and with specific color on image. Use `with align center` at the end to make the text center.")
 @Examples("draw \"Hello World :D\" with font style {_font} at 0, 50 with color from rgb 50, 32, 12 on {_image}")
 @Since("1.0")
 public class EffDrawText extends Effect {
 
 	static {
 		Skript.registerEffect(EffDrawText.class,
-				"[skimage] draw [text] %string% with [the] font [style] %font% at [x] %integer%[ ](,|and)[ ][y] %integer% with [color] %imagecolor% on [the] [image] %image%");
+				"[skimage] draw [text] %string% with [the] font [style] %font% at [x] %integer%[ ](,|and)[ ][y] %integer% with [color] %imagecolor% on [the] [image] %image%",
+				"[skimage] draw [text] %string% with [the] font [style] %font% at [x] %integer%[ ](,|and)[ ][y] %integer% with [color] %imagecolor% on [the] [image] %image% with align center");
 	}
 
 	private Expression<String> exprText;
@@ -30,6 +32,7 @@ public class EffDrawText extends Effect {
 	private Expression<Integer> exprX, exprY;
 	private Expression<Color> exprColor;
 	private Expression<BufferedImage> exprImage;
+	private Integer isCenter;
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -40,6 +43,7 @@ public class EffDrawText extends Effect {
 		exprY = (Expression<Integer>) exprs[3];
 		exprColor = (Expression<Color>) exprs[4];
 		exprImage = (Expression<BufferedImage>) exprs[5];
+		isCenter = matchedPattern;
 		return true;
 	}
 
@@ -55,7 +59,16 @@ public class EffDrawText extends Effect {
 		Graphics2D g2d = image.createGraphics();
 		g2d.setFont(font);
 		g2d.setColor(color);
-		g2d.drawString(text, x, y);
+		if (isCenter == 0) {
+			g2d.drawString(text, x, y);
+		} else {
+			TextLayout textLayout = new TextLayout(text, g2d.getFont(),
+					g2d.getFontRenderContext());
+			double textHeight = textLayout.getBounds().getHeight();
+			double textWidth = textLayout.getBounds().getWidth();
+			g2d.drawString(text, (x / 2 - (int) textWidth / 2),
+					(y / 2 + (int) textHeight / 2));
+		}
 		g2d.dispose();
 	}
 
