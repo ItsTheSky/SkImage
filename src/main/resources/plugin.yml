@@ -3,3 +3,5 @@ author: ItsTheSky
 version: @VERSION@
 description: Simple addon which let you create, manage and customize image.
 main: info.itsthesky.SkImage.SkImage
+softdepend:
+  - Skript
