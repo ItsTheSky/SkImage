@@ -42,7 +42,7 @@ public class ExprNewImage extends SimpleExpression<BufferedImage> {
 		Integer width = exprWidth.getSingle(e);
 		Integer height = exprHeight.getSingle(e);
 		if (width != null && height != null) {
-			BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+			BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_INDEXED);
 			return new BufferedImage[] {image};
 		}
 		return new BufferedImage[0];
