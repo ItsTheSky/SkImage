@@ -22,10 +22,10 @@ import java.util.List;
 @Description("Returns list of all active and enabled font")
 @Examples("set {_fonts::*} to all registered font")
 @Since("1.3")
-public class ExprAllFonts extends SimpleExpression<String[]> {
+public class ExprAllFonts extends SimpleExpression<String> {
 
 	static {
-		Skript.registerExpression(ExprAllFonts.class, String[].class, ExpressionType.SIMPLE,
+		Skript.registerExpression(ExprAllFonts.class, String.class, ExpressionType.SIMPLE,
 				"[skimage] all [registered] [image] font[s]");
 	}
 
@@ -36,19 +36,18 @@ public class ExprAllFonts extends SimpleExpression<String[]> {
 	}
 
 	@Override
-	protected String[][] get(Event e) {
-		List<String> s = new ArrayList<>(Arrays.asList(GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames()));
-		return new String[][] {s.toArray(new String[0])};
+	protected String[] get(Event e) {
+		return GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
 	}
 
 	@Override
 	public boolean isSingle() {
-		return true;
+		return false;
 	}
 
 	@Override
-	public Class<? extends String[]> getReturnType() {
-		return String[].class;
+	public Class<? extends String> getReturnType() {
+		return String.class;
 	}
 
 	@Override
