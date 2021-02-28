@@ -2,6 +2,7 @@ package info.itsthesky.SkImage;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.SkriptAddon;
+import info.itsthesky.SkImage.skript.Test;
 import info.itsthesky.SkImage.skript.Types;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
@@ -30,6 +31,8 @@ public class SkImage extends JavaPlugin {
 		Bukkit.getConsoleSender().sendMessage("§6SkImage version §e" + getDescription().getVersion() + "§6 is loading ...");
 
 		saveResourceAs("config.yml", "config.yml");
+
+		new Test();
 
 		pluginManager = Bukkit.getPluginManager();
 		if ((pluginManager.getPlugin("Skript") != null) && Skript.isAcceptRegistrations()) {
