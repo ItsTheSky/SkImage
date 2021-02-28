@@ -24,7 +24,7 @@ public class ExprColoredImage extends SimpleExpression<BufferedImage> {
 
 	static {
 		Skript.registerExpression(ExprColoredImage.class, BufferedImage.class, ExpressionType.SIMPLE,
-				"[skimage] (tinted|colored) [image] %image% with [the] (color|theme) %imagecolor%");
+				"[skimage] (tinted|colored) [image] %image% with [the] [(color|theme)] %imagecolor%");
 	}
 
 	private Expression<BufferedImage> exprImage;
