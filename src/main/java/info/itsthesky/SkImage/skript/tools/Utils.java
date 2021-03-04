@@ -1,4 +1,4 @@
-package info.itsthesky.SkImage;
+package info.itsthesky.SkImage.skript.tools;
 
 import ch.njol.skript.lang.SkriptEvent;
 import ch.njol.skript.lang.Variable;
@@ -25,9 +25,19 @@ public class Utils {
 		Variables.setVariable(name, value, event, variable.isLocal());
 	}
 
-	public static Integer round(Double number) {
+	public static Integer round(Object number) {
 		String t = number.toString().split("\\.")[0];
 		return Integer.valueOf(t);
+	}
+
+	public static BufferedImage resizedImage(final BufferedImage image, final int sizeX, final int sizeY, Integer algo) {
+		if (algo == null) algo = 1;
+		final Image temp = image.getScaledInstance(sizeX, sizeY, algo);
+		final BufferedImage resized = new BufferedImage(sizeX, sizeY, getDefaultType());
+		final Graphics2D g2d = resized.createGraphics();
+		g2d.drawImage(temp, 0, 0, null);
+		g2d.dispose();
+		return resized;
 	}
 
 	public static BufferedImage blur(BufferedImage image, int force) {
@@ -47,6 +57,10 @@ public class Utils {
 		g2d.drawImage(image, 0, 0, null);
 		g2d.dispose();
 		return bawImage;
+	}
+
+	public static int getDefaultType() {
+		return 1;
 	}
 
 	public static BufferedImage lighterImage(BufferedImage image, float force) {

@@ -10,6 +10,7 @@ import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
+import info.itsthesky.SkImage.skript.tools.Utils;
 import org.bukkit.event.Event;
 
 import java.awt.image.BufferedImage;
@@ -42,7 +43,7 @@ public class ExprNewImage extends SimpleExpression<BufferedImage> {
 		Integer width = exprWidth.getSingle(e);
 		Integer height = exprHeight.getSingle(e);
 		if (width != null && height != null) {
-			BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_INDEXED);
+			BufferedImage image = new BufferedImage(width, height, Utils.getDefaultType());
 			return new BufferedImage[] {image};
 		}
 		return new BufferedImage[0];

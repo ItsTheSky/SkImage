@@ -10,9 +10,11 @@ import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
+import info.itsthesky.SkImage.skript.tools.Utils;
 import org.bukkit.event.Event;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -52,7 +54,12 @@ public class ExprImageFromFile extends SimpleExpression<BufferedImage> {
 		}
 		Path path = Paths.get(file);
 		try {
-			return new BufferedImage[] {ImageIO.read(path.toFile())};
+			BufferedImage img = ImageIO.read(path.toFile());
+			BufferedImage finalImage = new BufferedImage(img.getWidth(), img.getHeight(), Utils.getDefaultType());
+			Graphics2D g2d = finalImage.createGraphics();
+			g2d.drawImage(img, 0, 0, null);
+			g2d.dispose();
+			return new BufferedImage[] {finalImage};
 		} catch (IOException ioException) {
 			ioException.printStackTrace();
 		}

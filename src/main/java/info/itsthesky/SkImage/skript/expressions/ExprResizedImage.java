@@ -10,6 +10,7 @@ import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
+import info.itsthesky.SkImage.skript.tools.Utils;
 import org.bukkit.event.Event;
 
 import java.awt.*;
@@ -45,17 +46,12 @@ public class ExprResizedImage extends SimpleExpression<BufferedImage> {
 		Integer sizeX = exprSizeX.getSingle(e);
 		Integer sizeY = exprSizeY.getSingle(e);
 		Integer algo = exprAlgo.getSingle(e);
-		if (algo == null) {
-			algo = 1;
-		}
+		if (algo == null) algo = 1;
 		if (sizeX == null || sizeY == null || image == null) return new BufferedImage[0];
 		if (algo == 1 || algo == 2 || algo == 4 || algo == 8 || algo == 16) {
-			Image temp = image.getScaledInstance(sizeX, sizeY, algo);
-			BufferedImage resized = new BufferedImage(sizeX, sizeY, BufferedImage.TYPE_INT_ARGB);
-			Graphics2D g2d = resized.createGraphics();
-			g2d.drawImage(temp, 0, 0, null);
-			g2d.dispose();
-			return new BufferedImage[] {resized};
+			return new BufferedImage[] {
+					Utils.resizedImage(Utils.copiedImage(image), sizeX, sizeY, algo)
+			};
 		} else {
 			Skript.error("The algorithm ID is not valid. Valid ones are 1, 2, 4, 8 and 16 !");
 			return new BufferedImage[0];

@@ -10,6 +10,7 @@ import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
+import info.itsthesky.SkImage.skript.tools.Utils;
 import org.bukkit.event.Event;
 
 import javax.imageio.ImageIO;
@@ -54,7 +55,11 @@ public class ExprImageFromURL extends SimpleExpression<BufferedImage> {
 		if (newImage == null) {
 			return new BufferedImage[0];
 		}
-		return new BufferedImage[] {newImage};
+		BufferedImage image = new BufferedImage(newImage.getWidth(), newImage.getHeight(), Utils.getDefaultType());
+		Graphics2D g2d = image.createGraphics();
+		g2d.drawImage(newImage, 0, 0, null);
+		g2d.dispose();
+		return new BufferedImage[] {image};
 	}
 
 	@Override
