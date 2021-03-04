@@ -10,12 +10,13 @@ import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.Variable;
 import ch.njol.util.Kleenean;
-import info.itsthesky.SkImage.Utils;
+import info.itsthesky.SkImage.skript.tools.Utils;
+import info.itsthesky.SkImage.skript.tools.skript.AsyncEffect;
 import org.bukkit.event.Event;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.Observer;
 
 @Name("Draw Image on Image")
 @Description("Draw an Image on another Image")
@@ -48,16 +49,18 @@ public class EffDrawImage extends Effect {
 		Integer x = exprX.getSingle(e);
 		Integer y = exprY.getSingle(e);
 		if (image1 == null || image2 == null || y == null || x == null) return;
-		BufferedImage newImage = new BufferedImage(image1.getWidth(), image1.getHeight(), BufferedImage.TYPE_INT_ARGB);
-		Graphics2D g2d = newImage.createGraphics();
-		g2d.drawImage(image2, x, y, null);
-		g2d.drawImage(image1, x, y, null);
-		g2d.dispose();
-		new Utils().setSkriptVariable((Variable) exprImage2, newImage, e);
+		new Thread(() -> {
+			BufferedImage newImage = new BufferedImage(image1.getWidth(), image1.getHeight(), Utils.getDefaultType());
+			Graphics2D g2d = newImage.createGraphics();
+			g2d.drawImage(image2, x, y, null);
+			g2d.drawImage(image1, x, y, null);
+			g2d.dispose();
+			Utils.setSkriptVariable((Variable) exprImage2, newImage, e);
+		}).start();
 	}
 
 	@Override
-	public String toString(Event e, boolean debug) {
+	public @NotNull String toString(Event e, boolean debug) {
 		return "draw image " + exprImage1.toString(e, debug) + " on the image " + exprImage2.toString(e, debug) + " at " + exprX.toString(e, debug) + ", " + exprY.toString(e, debug);
 	}
 
