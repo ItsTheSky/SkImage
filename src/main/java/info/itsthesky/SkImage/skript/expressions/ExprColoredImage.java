@@ -10,7 +10,7 @@ import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
-import info.itsthesky.SkImage.Utils;
+import info.itsthesky.SkImage.skript.tools.Utils;
 import org.bukkit.event.Event;
 
 import java.awt.*;

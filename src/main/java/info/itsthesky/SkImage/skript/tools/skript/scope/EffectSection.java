@@ -103,7 +103,7 @@ public abstract class EffectSection extends Condition {
     }
 
     /**
-     * It is to replicate 
+     * It is to replicate
      *
      * @param e - The Event
      */

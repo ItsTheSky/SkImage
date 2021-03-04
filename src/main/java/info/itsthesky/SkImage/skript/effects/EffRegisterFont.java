@@ -9,6 +9,7 @@ import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
+import info.itsthesky.SkImage.skript.tools.skript.AsyncEffect;
 import org.bukkit.event.Event;
 
 import java.awt.*;
@@ -43,21 +44,23 @@ public class EffRegisterFont extends Effect {
 		String path = exprPath.getSingle(e);
 		if (path == null) return;
 		File file = new File(path);
-		if (file.isFile()) {
-			try {
-				GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(Font.createFont(Font.TRUETYPE_FONT, file));
-			} catch (FontFormatException | IOException fontFormatException) {
-				fontFormatException.printStackTrace();
-			}
-		} else if (file.isDirectory()) {
-			for (File f : file.listFiles()) {
+		new Thread(() -> {
+			if (file.isFile()) {
 				try {
-					GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(Font.createFont(Font.TRUETYPE_FONT, f));
+					GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(Font.createFont(Font.TRUETYPE_FONT, file));
 				} catch (FontFormatException | IOException fontFormatException) {
 					fontFormatException.printStackTrace();
 				}
+			} else if (file.isDirectory()) {
+				for (File f : file.listFiles()) {
+					try {
+						GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(Font.createFont(Font.TRUETYPE_FONT, f));
+					} catch (FontFormatException | IOException fontFormatException) {
+						fontFormatException.printStackTrace();
+					}
+				}
 			}
-		}
+		}).start();
 	}
 
 	@Override
