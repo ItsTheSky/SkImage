@@ -50,7 +50,7 @@ public class EffDrawImage extends Effect {
 		Integer y = exprY.getSingle(e);
 		if (image1 == null || image2 == null || y == null || x == null) return;
 		new Thread(() -> {
-			BufferedImage newImage = new BufferedImage(image1.getWidth(), image1.getHeight(), Utils.getDefaultType());
+			BufferedImage newImage = new BufferedImage(image2.getWidth(), image2.getHeight(), Utils.getDefaultType());
 			Graphics2D g2d = newImage.createGraphics();
 			g2d.drawImage(image2, x, y, null);
 			g2d.drawImage(image1, x, y, null);
