@@ -60,7 +60,7 @@ public class Utils {
 	}
 
 	public static int getDefaultType() {
-		return 1;
+		return 2;
 	}
 
 	public static BufferedImage lighterImage(BufferedImage image, float force) {
