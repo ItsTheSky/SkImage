@@ -11,7 +11,6 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.Variable;
 import ch.njol.util.Kleenean;
 import info.itsthesky.SkImage.skript.tools.Utils;
-import info.itsthesky.SkImage.skript.tools.skript.AsyncEffect;
 import org.bukkit.event.Event;
 import org.jetbrains.annotations.NotNull;
 
@@ -26,37 +25,34 @@ public class EffDrawImage extends Effect {
 
 	static {
 		Skript.registerEffect(EffDrawImage.class,
-				"[skimage] draw [the] [image] %image% on [the] [other] [image] %image% at %integer%[ ][,][ ]%integer%");
+				"[skimage] draw [the] [image] %image% on [the] [other] [image] %image% at %number%[ ][,][ ]%number%");
 	}
 
 	private Expression<BufferedImage> exprImage1, exprImage2;
-	private Expression<Integer> exprX, exprY;
+	private Expression<Number> exprX;
+	private Expression<Number> exprY;
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
 		exprImage1 = (Expression<BufferedImage>) exprs[0];
 		exprImage2 = (Expression<BufferedImage>) exprs[1];
-		exprX = (Expression<Integer>) exprs[2];
-		exprY = (Expression<Integer>) exprs[3];
+		exprX = (Expression<Number>) exprs[2];
+		exprY = (Expression<Number>) exprs[3];
 		return true;
 	}
 
 	@Override
-	protected void execute(Event e) {
+	protected void execute(@NotNull Event e) {
 		BufferedImage image1 = exprImage1.getSingle(e);
 		BufferedImage image2 = exprImage2.getSingle(e);
-		Integer x = exprX.getSingle(e);
-		Integer y = exprY.getSingle(e);
+		Number x = exprX.getSingle(e);
+		Number y = exprY.getSingle(e);
 		if (image1 == null || image2 == null || y == null || x == null) return;
-		new Thread(() -> {
-			BufferedImage newImage = new BufferedImage(image2.getWidth(), image2.getHeight(), Utils.getDefaultType());
-			Graphics2D g2d = newImage.createGraphics();
-			g2d.drawImage(image2, 0, 0, null);
-			g2d.drawImage(image1, x, y, null);
-			g2d.dispose();
-			Utils.setSkriptVariable((Variable) exprImage2, newImage, e);
-		}).start();
+		Graphics2D g2d = image2.createGraphics();
+		g2d.drawImage(image1, x.intValue(), y.intValue(), null);
+		g2d.dispose();
+		Utils.setSkriptVariable((Variable) exprImage2, image2, e);
 	}
 
 	@Override
