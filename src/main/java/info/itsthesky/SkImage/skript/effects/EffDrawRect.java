@@ -9,16 +9,10 @@ import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
-import info.itsthesky.SkImage.skript.tools.skript.AsyncEffect;
 import org.bukkit.event.Event;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 
 @Name("Draw Rectangle on Image")
 @Description("Draw a rectangle on a specific image (with color, location and size)")

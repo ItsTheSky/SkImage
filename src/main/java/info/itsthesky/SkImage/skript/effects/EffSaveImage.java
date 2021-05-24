@@ -48,28 +48,26 @@ public class EffSaveImage extends Effect {
 		String path = exprPath.getSingle(e);
 		BufferedImage image = exprImage.getSingle(e);
 		if (path == null || image == null) return;
-		new Thread(() -> {
-			File file = new File(path);
-			file.getParentFile().mkdirs();
-			if (file.exists()) {
-				File configFile = new File(SkImage.getInstance().getDataFolder(), "config.yml");
-				FileConfiguration configConfig = YamlConfiguration.loadConfiguration(configFile);
-				Boolean replaceImage = configConfig.getBoolean("ImageReplacement");
-				if (!replaceImage) {
-					Skript.error("The file called " + path + " already exist! Disable this non-replacement in the node `ImageReplacement` from `plugins/SkImage/config.yml`");
-					return;
-				}
-				file.delete();
-				file = new File(path);
+		File file = new File(path);
+		file.getParentFile().mkdirs();
+		if (file.exists()) {
+			File configFile = new File(SkImage.getInstance().getDataFolder(), "config.yml");
+			FileConfiguration configConfig = YamlConfiguration.loadConfiguration(configFile);
+			Boolean replaceImage = configConfig.getBoolean("ImageReplacement");
+			if (!replaceImage) {
+				Skript.error("The file called " + path + " already exist! Disable this non-replacement in the node `ImageReplacement` from `plugins/SkImage/config.yml`");
+				return;
 			}
-			List<String> alls = Arrays.asList(path.split("\\."));
-			String ext = alls.get(alls.size()-1);
-			try {
-				ImageIO.write(image, ext, file);
-			} catch (IOException ioException) {
-				ioException.printStackTrace();
-			}
-		}).start();
+			file.delete();
+			file = new File(path);
+		}
+		List<String> alls = Arrays.asList(path.split("\\."));
+		String ext = alls.get(alls.size()-1);
+		try {
+			ImageIO.write(image, ext, file);
+		} catch (IOException ioException) {
+			ioException.printStackTrace();
+		}
 	}
 
 	@Override
