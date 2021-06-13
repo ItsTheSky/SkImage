@@ -7,6 +7,7 @@ import ch.njol.skript.variables.Variables;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.event.Event;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.ConvolveOp;
@@ -72,6 +73,18 @@ public class Utils {
 		int g = c1.getGreen() - c2.getGreen();
 		int b = c1.getBlue() - c2.getBlue();
 		return Math.sqrt((((512+rmean)*r*r)>>8) + 4*g*g + (((767-rmean)*b*b)>>8));
+	}
+
+	public static Color mainColor(BufferedImage image) {
+		int r = 0, g = 0, b = 0, k = 0, x, y;
+		for (x = 0; x < image.getWidth(); x++)
+			for (y = 0; y < image.getHeight(); k++) {
+				Color c = new Color(image.getRGB(x, y++));
+				r += c.getRed();
+				g += c.getGreen();
+				b += c.getBlue();
+			}
+		return new Color(r / k, g / k, b / k);
 	}
 
 	public static BufferedImage lighterImage(BufferedImage image, float force) {
