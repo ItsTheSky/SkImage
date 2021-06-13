@@ -23,8 +23,8 @@ public class EffDrawText extends Effect {
 
 	static {
 		Skript.registerEffect(EffDrawText.class,
-				"[skimage] draw [text] %string% with [the] font [style] %font% at [x] %integer%[ ](,|and)[ ][y] %integer% with [color] %imagecolor% on [the] [image] %image%",
-				"[skimage] draw [text] %string% with [the] font [style] %font% at [x] %integer%[ ](,|and)[ ][y] %integer% with [color] %imagecolor% on [the] [image] %image% with align center");
+				"[skimage] draw [text] %string% [with anti[-]aliases] with [the] font [style] %font% at [x] %integer%[ ](,|and)[ ][y] %integer% with [color] %imagecolor% on [the] [image] %image%",
+				"[skimage] draw [text] %string% [with anti[-]aliases] with [the] font [style] %font% at [x] %integer%[ ](,|and)[ ][y] %integer% with [color] %imagecolor% on [the] [image] %image% with align center");
 	}
 
 	private Expression<String> exprText;
@@ -32,6 +32,7 @@ public class EffDrawText extends Effect {
 	private Expression<Integer> exprX, exprY;
 	private Expression<Color> exprColor;
 	private Expression<BufferedImage> exprImage;
+	private boolean hasAliases = false;
 	private Integer isCenter;
 
 	@SuppressWarnings("unchecked")
@@ -44,6 +45,7 @@ public class EffDrawText extends Effect {
 		exprColor = (Expression<Color>) exprs[4];
 		exprImage = (Expression<BufferedImage>) exprs[5];
 		isCenter = matchedPattern;
+		hasAliases = parseResult.expr.contains("with anti");
 		return true;
 	}
 
@@ -57,6 +59,11 @@ public class EffDrawText extends Effect {
 		BufferedImage image = exprImage.getSingle(e);
 		if (text == null || x == null || y == null || image == null) return;
 		Graphics2D g2d = image.createGraphics();
+		if (hasAliases) {
+			RenderingHints rh = new RenderingHints(RenderingHints.KEY_TEXT_ANTIALIASING,
+					RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+			g2d.setRenderingHints(rh);
+		}
 		g2d.setFont(font);
 		g2d.setColor(color);
 		if (isCenter == 0) {

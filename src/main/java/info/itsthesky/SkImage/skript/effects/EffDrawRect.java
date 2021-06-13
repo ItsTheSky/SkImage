@@ -22,38 +22,60 @@ public class EffDrawRect extends Effect {
 
 	static {
 		Skript.registerEffect(EffDrawRect.class,
-				"[skimage] draw rect[angle] at [the [pixel] location] %integer%[ ][,][ ]%integer% with [the] size %integer%[ ][,][ ]%integer% with [(color|colored)] %imagecolor% on [the] [image] %image%");
+				"[skimage] draw rect[angle] [with anti[-]aliases] at [the [pixel] location] %integer%[ ][,][ ]%integer% with [the] size %integer%[ ][,][ ]%integer% with [(color|colored)] %imagecolor% [[with] [rotation] %-number% degree[s] [angle] [using origin location %-number%,[ ]%-number%]] on [the] [image] %image%");
 	}
 
-	private Expression<Integer> exprX, exprY;
-	private Expression<Integer> exprSizeX, exprSizeY;
+	private Expression<Number> exprX, exprY;
+	private Expression<Number> exprSizeX, exprSizeY;
+	private Expression<Number> exprRotation;
+	private Expression<Number> exprRotOriginX, exprRotOriginY;
 	private Expression<Color> exprColor;
 	private Expression<BufferedImage> exprImage;
+	private boolean hasAliases = false;
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
-		exprX = (Expression<Integer>) exprs[0];
-		exprY = (Expression<Integer>) exprs[1];
-		exprSizeX = (Expression<Integer>) exprs[2];
-		exprSizeY = (Expression<Integer>) exprs[3];
+		exprX = (Expression<Number>) exprs[0];
+		exprY = (Expression<Number>) exprs[1];
+		exprSizeX = (Expression<Number>) exprs[2];
+		exprSizeY = (Expression<Number>) exprs[3];
 		exprColor = (Expression<Color>) exprs[4];
-		exprImage = (Expression<BufferedImage>) exprs[5];
+		exprRotation = (Expression<Number>) exprs[5];
+		exprRotOriginX = (Expression<Number>) exprs[6];
+		exprRotOriginY = (Expression<Number>) exprs[7];
+		exprImage = (Expression<BufferedImage>) exprs[8];
+		hasAliases = parseResult.expr.contains("with anti");
 		return true;
 	}
 
 	@Override
 	protected void execute(Event e) {
-		Integer x = exprX.getSingle(e);
-		Integer y = exprY.getSingle(e);
-		Integer sizeX = exprSizeX.getSingle(e);
-		Integer sizeY = exprSizeY.getSingle(e);
+		Number x = exprX.getSingle(e);
+		Number y = exprY.getSingle(e);
+		Number sizeX = exprSizeX.getSingle(e);
+		Number sizeY = exprSizeY.getSingle(e);
+		Number rot = exprRotation == null ? null : (exprRotation.getSingle(e) == null ? null : exprRotation.getSingle(e));
+		Number rotPosX = exprRotOriginX == null ? null : (exprRotOriginX.getSingle(e) == null ? null : exprRotOriginX.getSingle(e));
+		Number rotPosY = exprRotOriginY == null ? null : (exprRotOriginY.getSingle(e) == null ? null : exprRotOriginY.getSingle(e));
 		Color color = exprColor.getSingle(e);
 		BufferedImage image = exprImage.getSingle(e);
 		if (x == null || y == null || sizeX == null || sizeY == null || color == null || image == null) return;
 		Graphics2D g2d = image.createGraphics();
+		if (hasAliases) {
+			RenderingHints rh = new RenderingHints(RenderingHints.KEY_TEXT_ANTIALIASING,
+					RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+			g2d.setRenderingHints(rh);
+		}
+		if (rot != null) {
+			if (rotPosX == null || rotPosY == null) {
+				g2d.rotate(Math.toRadians(rot.intValue()), x.intValue(), y.intValue());
+			} else {
+				g2d.rotate(Math.toRadians(rot.intValue()), rotPosX.intValue() - x.intValue(), rotPosX.intValue() - y.intValue());
+			}
+		}
 		g2d.setColor(color);
-		g2d.fillRect(x, y, sizeX, sizeY);
+		g2d.fillRect(x.intValue(), y.intValue(), sizeX.intValue(), sizeY.intValue());
 		g2d.dispose();
 	}
 

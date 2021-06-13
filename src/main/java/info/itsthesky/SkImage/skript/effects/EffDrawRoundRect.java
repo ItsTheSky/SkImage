@@ -22,43 +22,53 @@ public class EffDrawRoundRect extends Effect {
 
 	static {
 		Skript.registerEffect(EffDrawRoundRect.class,
-				"[skimage] draw round[ed] rect[angle] at [the [pixel] location] %integer%[ ][,][ ]%integer% with [the] size %integer%[ ][,][ ]%integer% with [(color|colored)] %imagecolor% with arc (size|pixel) %integer%[ ][,][ ]%integer% on [the] [image] %image%");
+				"[skimage] draw round[ed] rect[angle] [with anti[-]aliases] at [the [pixel] location] %number%[ ][,][ ]%number% with [the] size %number%[ ][,][ ]%number% with [(color|colored)] %imagecolor% with arc (size|pixel) %number%[ ][,][ ]%number% on [the] [image] %image%");
 	}
 
-	private Expression<Integer> exprX, exprY;
-	private Expression<Integer> exprSizeX, exprSizeY;
-	private Expression<Integer> exprArcX, exprArcY;
+	private Expression<Number> exprX;
+	private Expression<Number> exprY;
+	private Expression<Number> exprSizeX;
+	private Expression<Number> exprSizeY;
+	private Expression<Number> exprArcY;
+	private Expression<Number> exprArcX;
 	private Expression<Color> exprColor;
+	private boolean hasAliases = false;
 	private Expression<BufferedImage> exprImage;
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
-		exprX = (Expression<Integer>) exprs[0];
-		exprY = (Expression<Integer>) exprs[1];
-		exprSizeX = (Expression<Integer>) exprs[2];
-		exprSizeY = (Expression<Integer>) exprs[3];
+		exprX = (Expression<Number>) exprs[0];
+		exprY = (Expression<Number>) exprs[1];
+		exprSizeX = (Expression<Number>) exprs[2];
+		exprSizeY = (Expression<Number>) exprs[3];
 		exprColor = (Expression<Color>) exprs[4];
-		exprArcX = (Expression<Integer>) exprs[5];
-		exprArcY = (Expression<Integer>) exprs[6];
+		exprArcX = (Expression<Number>) exprs[5];
+		exprArcY = (Expression<Number>) exprs[6];
 		exprImage = (Expression<BufferedImage>) exprs[7];
+		hasAliases = parseResult.expr.contains("with anti");
 		return true;
 	}
 
 	@Override
 	protected void execute(Event e) {
-		Integer x = exprX.getSingle(e);
-		Integer y = exprY.getSingle(e);
-		Integer sizeX = exprSizeX.getSingle(e);
-		Integer sizeY = exprSizeY.getSingle(e);
-		Integer arcX = exprArcX.getSingle(e);
-		Integer arcY = exprArcY.getSingle(e);
+		Number x = exprX.getSingle(e);
+		Number y = exprY.getSingle(e);
+		Number sizeX = exprSizeX.getSingle(e);
+		Number sizeY = exprSizeY.getSingle(e);
+		Number arcX = exprArcX.getSingle(e);
+		Number arcY = exprArcY.getSingle(e);
 		Color color = exprColor.getSingle(e);
 		BufferedImage image = exprImage.getSingle(e);
 		if (x == null || y == null || sizeX == null || sizeY == null || color == null || image == null || arcX == null || arcY == null) return;
 		Graphics2D g2d = image.createGraphics();
+		if (hasAliases) {
+			RenderingHints rh = new RenderingHints(RenderingHints.KEY_TEXT_ANTIALIASING,
+					RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+			g2d.setRenderingHints(rh);
+		}
 		g2d.setColor(color);
-		g2d.fillRoundRect(x, y, sizeX, sizeY, arcX, arcY);
+		g2d.fillRoundRect(x.intValue(), y.intValue(), sizeX.intValue(), sizeY.intValue(), arcX.intValue(), arcY.intValue());
 		g2d.dispose();
 	}
 
