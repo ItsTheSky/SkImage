@@ -22,7 +22,7 @@ public class EffDrawRect extends Effect {
 
 	static {
 		Skript.registerEffect(EffDrawRect.class,
-				"[skimage] draw rect[angle] [with anti[-]aliases] at [the [pixel] location] %integer%[ ][,][ ]%integer% with [the] size %integer%[ ][,][ ]%integer% with [(color|colored)] %imagecolor% [[with] [rotation] %-number% degree[s] [angle] [using origin location %-number%,[ ]%-number%]] on [the] [image] %image%");
+				"[skimage] draw rect[angle] [with anti[-]aliases] at [the [pixel] location] %number%[ ][,][ ]%number% with [the] size %number%[ ][,][ ]%number% with [(color|colored)] %imagecolor% [[with] [rotation] %-number% degree[s] [angle] [using origin location %-number%,[ ]%-number%]] on [the] [image] %image%");
 	}
 
 	private Expression<Number> exprX, exprY;

@@ -24,7 +24,7 @@ public class ExprResizedImage extends SimpleExpression<BufferedImage> {
 
 	static {
 		Skript.registerExpression(ExprResizedImage.class, BufferedImage.class, ExpressionType.SIMPLE,
-				"[skimage] resized [the] [image] %image% (with|to) [the] [size] %integer%[ ][,][ ]%integer% [with algo[rithm] %integer%]");
+				"[skimage] resized [the] [image] %image% (with|to) [the] [size] %number%[ ][,][ ]%number% [with algo[rithm] %number%]");
 	}
 
 	private Expression<BufferedImage> exprImage1;

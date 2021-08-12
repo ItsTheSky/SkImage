@@ -23,7 +23,7 @@ public class ExprImageBlurred extends SimpleExpression<BufferedImage> {
 
 	static {
 		Skript.registerExpression(ExprImageBlurred.class, BufferedImage.class, ExpressionType.SIMPLE,
-				"[skimage] blur[red] [image] %image% with [the] (force|power) %integer%");
+				"[skimage] blur[red] [image] %image% with [the] (force|power) %number%");
 	}
 
 	private Expression<BufferedImage> exprImage;

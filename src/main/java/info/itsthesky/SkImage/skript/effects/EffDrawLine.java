@@ -22,7 +22,7 @@ public class EffDrawLine extends Effect {
 
 	static {
 		Skript.registerEffect(EffDrawLine.class,
-				"[skimage] draw line with [the] (size|width) %integer% from %integer%[ ][,][ ]%integer% to %integer%[ ][,][ ]%integer% with [(color|colored)] %imagecolor% on [the] [image] %image%");
+				"[skimage] draw line with [the] (size|width) %number% from %number%[ ][,][ ]%number% to %number%[ ][,][ ]%number% with [(color|colored)] %imagecolor% on [the] [image] %image%");
 	}
 
 	private Expression<Integer> exprSize;

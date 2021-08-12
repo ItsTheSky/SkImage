@@ -23,7 +23,7 @@ public class ExprDarkerImage extends SimpleExpression<BufferedImage> {
 
 	static {
 		Skript.registerExpression(ExprDarkerImage.class, BufferedImage.class, ExpressionType.SIMPLE,
-				"[skimage] darker [image] %image% with [the] force %integer%");
+				"[skimage] darker [image] %image% with [the] force %number%");
 	}
 
 	private Expression<BufferedImage> exprImage;

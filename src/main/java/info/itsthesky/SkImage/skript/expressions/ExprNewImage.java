@@ -23,8 +23,8 @@ public class ExprNewImage extends SimpleExpression<BufferedImage> {
 
 	static {
 		Skript.registerExpression(ExprNewImage.class, BufferedImage.class, ExpressionType.SIMPLE,
-				"[skimage] new image with [width] %integer% and [with] [height] %integer%",
-				"[skimage] new image with size %integer%[ ][,][ ]%integer%");
+				"[skimage] new image with [width] %number% and [with] [height] %number%",
+				"[skimage] new image with size %number%[ ][,][ ]%number%");
 	}
 
 	private Expression<Integer> exprWidth;

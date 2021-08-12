@@ -26,7 +26,7 @@ public class ExprNewTextFormat extends SimpleExpression<Font> {
 
 	static {
 		Skript.registerExpression(ExprNewTextFormat.class, Font.class, ExpressionType.SIMPLE,
-				"[skimage] new font[ ](format|style) with [the] [font] [name] %string% [[and] with [the] [style] %-string%] and with [the] [font] size %integer%");
+				"[skimage] new font[ ](format|style) with [the] [font] [name] %string% [[and] with [the] [style] %-string%] and with [the] [font] size %number%");
 	}
 
 	private Expression<String> exprFont;
@@ -47,7 +47,7 @@ public class ExprNewTextFormat extends SimpleExpression<Font> {
 		String font = exprFont.getSingle(e);
 		Number size = exprSize.getSingle(e);
 		String style = exprStyle == null ? "plain" : (exprStyle.getSingle(e) == null ? "plain" : exprStyle.getSingle(e));
-		if (font == null || size == null) return new Font[0];
+		if (font == null || size == null || style == null) return new Font[0];
 		if (!Arrays.asList(GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames()).contains(font)) {
 			SkImage.getInstance().getLogger().severe("The font named " + font + " doesn't exist or is not loaded in the JVM!");
 			return new Font[0];

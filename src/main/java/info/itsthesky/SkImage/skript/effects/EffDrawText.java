@@ -9,6 +9,7 @@ import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
+import info.itsthesky.SkImage.SkImage;
 import org.bukkit.event.Event;
 
 import java.awt.*;
@@ -23,8 +24,8 @@ public class EffDrawText extends Effect {
 
 	static {
 		Skript.registerEffect(EffDrawText.class,
-				"[skimage] draw [text] %string% [with anti[-]aliases] with [the] font [style] %font% at [x] %integer%[ ](,|and)[ ][y] %integer% with [color] %imagecolor% on [the] [image] %image%",
-				"[skimage] draw [text] %string% [with anti[-]aliases] with [the] font [style] %font% at [x] %integer%[ ](,|and)[ ][y] %integer% with [color] %imagecolor% on [the] [image] %image% with align center");
+				"[skimage] draw [text] %string% [with anti[-]aliases] with [the] font [style] %font% at [x] %number%[ ](,|and)[ ][y] %number% with [color] %imagecolor% on [the] [image] %image%",
+				"[skimage] draw [text] %string% [with anti[-]aliases] with [the] font [style] %font% at [x] %number%[ ](,|and)[ ][y] %number% with [color] %imagecolor% on [the] [image] %image% with align center");
 	}
 
 	private Expression<String> exprText;
@@ -66,15 +67,20 @@ public class EffDrawText extends Effect {
 		}
 		g2d.setFont(font);
 		g2d.setColor(color);
-		if (isCenter == 0) {
-			g2d.drawString(text, x, y);
-		} else {
-			TextLayout textLayout = new TextLayout(text, g2d.getFont(),
-					g2d.getFontRenderContext());
-			double textHeight = textLayout.getBounds().getHeight();
-			double textWidth = textLayout.getBounds().getWidth();
-			g2d.drawString(text, (x / 2 - (int) textWidth / 2),
-					(y / 2 + (int) textHeight / 2));
+		try {
+			if (isCenter == 0) {
+				g2d.drawString(text, x, y);
+			} else {
+				TextLayout textLayout = new TextLayout(text, g2d.getFont(),
+						g2d.getFontRenderContext());
+				double textHeight = textLayout.getBounds().getHeight();
+				double textWidth = textLayout.getBounds().getWidth();
+				g2d.drawString(text, (x / 2 - (int) textWidth / 2),
+						(y / 2 + (int) textHeight / 2));
+			}
+		} catch (Exception exception) {
+			SkImage.getInstance().getLogger().warning("Cannot draw text on the image because of an internal exception:");
+			SkImage.getInstance().getLogger().warning(exception.getMessage());
 		}
 		g2d.dispose();
 	}

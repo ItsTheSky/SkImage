@@ -23,7 +23,7 @@ public class ExprColorFromRGB extends SimpleExpression<Color> {
 
 	static {
 		Skript.registerExpression(ExprColorFromRGB.class, Color.class, ExpressionType.SIMPLE,
-				"[skimage] color from (rgb|redgreenblue) %integer%[ ][,][ ]%integer%[ ][,][ ]%integer%");
+				"[skimage] color from (rgb|redgreenblue) %number%[ ][,][ ]%number%[ ][,][ ]%number%");
 	}
 
 	private Expression<Integer> exprRed, exprGreen, exprBlue;
