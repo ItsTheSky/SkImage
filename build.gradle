@@ -7,8 +7,6 @@ plugins {
 group 'info.itsthesky'
 version '1.3'
 
-def version = '1.7'
-
 repositories {
     mavenCentral()
     maven {

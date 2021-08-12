@@ -19,10 +19,10 @@ import java.awt.image.BufferedImage;
 @Description("Return the width size of an image")
 @Examples("set {_width} to width of {_image}")
 @Since("1.0")
-public class ExprImageWidth extends SimpleExpression<Integer> {
+public class ExprImageWidth extends SimpleExpression<Number> {
 
 	static {
-		Skript.registerExpression(ExprImageWidth.class, Integer.class, ExpressionType.SIMPLE,
+		Skript.registerExpression(ExprImageWidth.class, Number.class, ExpressionType.SIMPLE,
 				"[skimage] [the] [pixel] width of [the] [image] %image%");
 	}
 

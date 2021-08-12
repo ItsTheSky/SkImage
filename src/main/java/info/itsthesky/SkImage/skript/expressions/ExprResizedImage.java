@@ -28,29 +28,29 @@ public class ExprResizedImage extends SimpleExpression<BufferedImage> {
 	}
 
 	private Expression<BufferedImage> exprImage1;
-	private Expression<Integer> exprSizeX, exprSizeY, exprAlgo;
+	private Expression<Number> exprSizeX, exprSizeY, exprAlgo;
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
 		exprImage1 = (Expression<BufferedImage>) exprs[0];
-		exprSizeX = (Expression<Integer>) exprs[1];
-		exprSizeY = (Expression<Integer>) exprs[2];
-		exprAlgo = (Expression<Integer>) exprs[3];
+		exprSizeX = (Expression<Number>) exprs[1];
+		exprSizeY = (Expression<Number>) exprs[2];
+		exprAlgo = (Expression<Number>) exprs[3];
 		return true;
 	}
 
 	@Override
 	protected BufferedImage[] get(Event e) {
 		BufferedImage image = exprImage1.getSingle(e);
-		Integer sizeX = exprSizeX.getSingle(e);
-		Integer sizeY = exprSizeY.getSingle(e);
-		Integer algo = exprAlgo.getSingle(e);
+		Number sizeX = exprSizeX.getSingle(e);
+		Number sizeY = exprSizeY.getSingle(e);
+		Number algo = exprAlgo.getSingle(e);
 		if (algo == null) algo = 1;
 		if (sizeX == null || sizeY == null || image == null) return new BufferedImage[0];
-		if (algo == 1 || algo == 2 || algo == 4 || algo == 8 || algo == 16) {
+		if (algo.intValue() == 1 || algo.intValue() == 2 || algo.intValue() == 4 || algo.intValue() == 8 || algo.intValue() == 16) {
 			return new BufferedImage[] {
-					Utils.resizedImage(Utils.copiedImage(image), sizeX, sizeY, algo)
+					Utils.resizedImage(Utils.copiedImage(image), sizeX.intValue(), sizeY.intValue(), algo.intValue())
 			};
 		} else {
 			Skript.error("The algorithm ID is not valid. Valid ones are 1, 2, 4, 8 and 16 !");

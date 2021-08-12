@@ -18,10 +18,10 @@ import java.awt.image.BufferedImage;
 @Description("Return the height size of an image")
 @Examples("set {_width} to height of {_image}")
 @Since("1.0")
-public class ExprImageHeight extends SimpleExpression<Integer> {
+public class ExprImageHeight extends SimpleExpression<Number> {
 
 	static {
-		Skript.registerExpression(ExprImageHeight.class, Integer.class, ExpressionType.SIMPLE,
+		Skript.registerExpression(ExprImageHeight.class, Number.class, ExpressionType.SIMPLE,
 				"[skimage] [the] [pixel] height of [the] [image] %image%");
 	}
 

@@ -26,24 +26,24 @@ public class ExprColorFromRGB extends SimpleExpression<Color> {
 				"[skimage] color from (rgb|redgreenblue) %number%[ ][,][ ]%number%[ ][,][ ]%number%");
 	}
 
-	private Expression<Integer> exprRed, exprGreen, exprBlue;
+	private Expression<Number> exprRed, exprGreen, exprBlue;
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
-		exprRed = (Expression<Integer>) exprs[0];
-		exprGreen = (Expression<Integer>) exprs[1];
-		exprBlue = (Expression<Integer>) exprs[2];
+		exprRed = (Expression<Number>) exprs[0];
+		exprGreen = (Expression<Number>) exprs[1];
+		exprBlue = (Expression<Number>) exprs[2];
 		return true;
 	}
 
 	@Override
 	protected Color[] get(Event e) {
-		Integer r = exprRed.getSingle(e);
-		Integer g = exprGreen.getSingle(e);
-		Integer b = exprBlue.getSingle(e);
+		Number r = exprRed.getSingle(e);
+		Number g = exprGreen.getSingle(e);
+		Number b = exprBlue.getSingle(e);
 		if (b == null || g == null || r == null) return new Color[0];
-		return new Color[] {new Color(r, g, b)};
+		return new Color[] {new Color(r.intValue(), g.intValue(), b.intValue())};
 	}
 
 	@Override

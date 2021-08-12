@@ -30,7 +30,7 @@ public class EffDrawText extends Effect {
 
 	private Expression<String> exprText;
 	private Expression<Font> exprFont;
-	private Expression<Integer> exprX, exprY;
+	private Expression<Number> exprX, exprY;
 	private Expression<Color> exprColor;
 	private Expression<BufferedImage> exprImage;
 	private boolean hasAliases = false;
@@ -41,8 +41,8 @@ public class EffDrawText extends Effect {
 	public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
 		exprText = (Expression<String>) exprs[0];
 		exprFont = (Expression<Font>) exprs[1];
-		exprX = (Expression<Integer>) exprs[2];
-		exprY = (Expression<Integer>) exprs[3];
+		exprX = (Expression<Number>) exprs[2];
+		exprY = (Expression<Number>) exprs[3];
 		exprColor = (Expression<Color>) exprs[4];
 		exprImage = (Expression<BufferedImage>) exprs[5];
 		isCenter = matchedPattern;
@@ -54,8 +54,8 @@ public class EffDrawText extends Effect {
 	protected void execute(Event e) {
 		String text = exprText.getSingle(e);
 		Font font = exprFont.getSingle(e);
-		Integer x = exprX.getSingle(e);
-		Integer y = exprY.getSingle(e);
+		Number x = exprX.getSingle(e);
+		Number y = exprY.getSingle(e);
 		Color color = exprColor.getSingle(e);
 		BufferedImage image = exprImage.getSingle(e);
 		if (text == null || x == null || y == null || image == null) return;
@@ -69,14 +69,14 @@ public class EffDrawText extends Effect {
 		g2d.setColor(color);
 		try {
 			if (isCenter == 0) {
-				g2d.drawString(text, x, y);
+				g2d.drawString(text, x.intValue(), y.intValue());
 			} else {
 				TextLayout textLayout = new TextLayout(text, g2d.getFont(),
 						g2d.getFontRenderContext());
 				double textHeight = textLayout.getBounds().getHeight();
 				double textWidth = textLayout.getBounds().getWidth();
-				g2d.drawString(text, (x / 2 - (int) textWidth / 2),
-						(y / 2 + (int) textHeight / 2));
+				g2d.drawString(text, (x.intValue() / 2 - (int) textWidth / 2),
+						(y.intValue() / 2 + (int) textHeight / 2));
 			}
 		} catch (Exception exception) {
 			SkImage.getInstance().getLogger().warning("Cannot draw text on the image because of an internal exception:");

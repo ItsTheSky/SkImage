@@ -27,24 +27,24 @@ public class ExprImageBlurred extends SimpleExpression<BufferedImage> {
 	}
 
 	private Expression<BufferedImage> exprImage;
-	private Expression<Integer> exprForce;
+	private Expression<Number> exprForce;
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
 		exprImage = (Expression<BufferedImage>) exprs[0];
-		exprForce = (Expression<Integer>) exprs[1];
+		exprForce = (Expression<Number>) exprs[1];
 		return true;
 	}
 
 	@Override
 	protected BufferedImage[] get(Event e) {
 		BufferedImage image = exprImage.getSingle(e);
-		Integer force = exprForce.getSingle(e);
+		Number force = exprForce.getSingle(e);
 		if (image == null || force == null) return new BufferedImage[0];
 		int w = image.getWidth();
 		int h = image.getHeight();
-		return new BufferedImage[] {Utils.blur(Utils.copiedImage(image), force)};
+		return new BufferedImage[] {Utils.blur(Utils.copiedImage(image), force.intValue())};
 	}
 
 	@Override

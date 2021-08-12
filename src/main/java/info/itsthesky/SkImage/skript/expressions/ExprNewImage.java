@@ -27,23 +27,23 @@ public class ExprNewImage extends SimpleExpression<BufferedImage> {
 				"[skimage] new image with size %number%[ ][,][ ]%number%");
 	}
 
-	private Expression<Integer> exprWidth;
-	private Expression<Integer> exprHeight;
+	private Expression<Number> exprWidth;
+	private Expression<Number> exprHeight;
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
-		exprWidth = (Expression<Integer>) exprs[0];
-		exprHeight = (Expression<Integer>) exprs[1];
+		exprWidth = (Expression<Number>) exprs[0];
+		exprHeight = (Expression<Number>) exprs[1];
 		return true;
 	}
 
 	@Override
 	protected BufferedImage[] get(Event e) {
-		Integer width = exprWidth.getSingle(e);
-		Integer height = exprHeight.getSingle(e);
+		Number width = exprWidth.getSingle(e);
+		Number height = exprHeight.getSingle(e);
 		if (width != null && height != null) {
-			BufferedImage image = new BufferedImage(width, height, Utils.getDefaultType());
+			BufferedImage image = new BufferedImage(width.intValue(), height.intValue(), Utils.getDefaultType());
 			return new BufferedImage[] {image};
 		}
 		return new BufferedImage[0];
