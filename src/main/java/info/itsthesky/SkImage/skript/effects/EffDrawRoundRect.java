@@ -9,6 +9,7 @@ import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
+import info.itsthesky.SkImage.skript.tools.Utils;
 import org.bukkit.event.Event;
 
 import java.awt.*;
@@ -22,7 +23,7 @@ public class EffDrawRoundRect extends Effect {
 
 	static {
 		Skript.registerEffect(EffDrawRoundRect.class,
-				"[skimage] draw round[ed] rect[angle] [with anti[-]aliases] at [the [pixel] location] %number%[ ][,][ ]%number% with [the] size %number%[ ][,][ ]%number% with [(color|colored)] %imagecolor% with arc (size|pixel) %number%[ ][,][ ]%number% on [the] [image] %image%");
+				"[skimage] draw round[ed] rect[angle] [with anti[-]aliases] at [the [pixel] location] %number%[ ][,][ ]%number% with [the] size %number%[ ][,][ ]%number% with [(color|colored)] %color% with arc (size|pixel) %number%[ ][,][ ]%number% on [the] [image] %image%");
 	}
 
 	private Expression<Number> exprX;
@@ -31,7 +32,7 @@ public class EffDrawRoundRect extends Effect {
 	private Expression<Number> exprSizeY;
 	private Expression<Number> exprArcY;
 	private Expression<Number> exprArcX;
-	private Expression<Color> exprColor;
+	private Expression<ch.njol.skript.util.Color> exprColor;
 	private boolean hasAliases = false;
 	private Expression<BufferedImage> exprImage;
 
@@ -42,7 +43,7 @@ public class EffDrawRoundRect extends Effect {
 		exprY = (Expression<Number>) exprs[1];
 		exprSizeX = (Expression<Number>) exprs[2];
 		exprSizeY = (Expression<Number>) exprs[3];
-		exprColor = (Expression<Color>) exprs[4];
+		exprColor = (Expression<ch.njol.skript.util.Color>) exprs[4];
 		exprArcX = (Expression<Number>) exprs[5];
 		exprArcY = (Expression<Number>) exprs[6];
 		exprImage = (Expression<BufferedImage>) exprs[7];
@@ -58,7 +59,7 @@ public class EffDrawRoundRect extends Effect {
 		Number sizeY = exprSizeY.getSingle(e);
 		Number arcX = exprArcX.getSingle(e);
 		Number arcY = exprArcY.getSingle(e);
-		Color color = exprColor.getSingle(e);
+		ch.njol.skript.util.Color color = exprColor.getSingle(e);
 		BufferedImage image = exprImage.getSingle(e);
 		if (x == null || y == null || sizeX == null || sizeY == null || color == null || image == null || arcX == null || arcY == null) return;
 		Graphics2D g2d = image.createGraphics();
@@ -67,7 +68,7 @@ public class EffDrawRoundRect extends Effect {
 					RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 			g2d.setRenderingHints(rh);
 		}
-		g2d.setColor(color);
+		g2d.setColor(Utils.convert(color));
 		g2d.fillRoundRect(x.intValue(), y.intValue(), sizeX.intValue(), sizeY.intValue(), arcX.intValue(), arcY.intValue());
 		g2d.dispose();
 	}

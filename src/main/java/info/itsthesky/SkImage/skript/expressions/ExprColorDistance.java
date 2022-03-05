@@ -25,25 +25,25 @@ public class ExprColorDistance extends SimpleExpression<Double> {
 
 	static {
 		Skript.registerExpression(ExprColorDistance.class, Double.class, ExpressionType.SIMPLE,
-				"[skimage] [color] distance between [the] %imagecolor% and %imagecolor%");
+				"[skimage] [color] distance between [the] %color% and %color%");
 	}
 
-	private Expression<Color> exprC1, exprC2;
+	private Expression<ch.njol.skript.util.Color> exprC1, exprC2;
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
-		exprC1 = (Expression<Color>) exprs[0];
-		exprC2 = (Expression<Color>) exprs[1];
+		exprC1 = (Expression<ch.njol.skript.util.Color>) exprs[0];
+		exprC2 = (Expression<ch.njol.skript.util.Color>) exprs[1];
 		return true;
 	}
 
 	@Override
 	protected Double[] get(Event e) {
-		Color c1 = exprC1.getSingle(e);
-		Color c2 = exprC2.getSingle(e);
+		ch.njol.skript.util.Color c1 = exprC1.getSingle(e);
+		ch.njol.skript.util.Color c2 = exprC2.getSingle(e);
 		if (c1 == null || c2 == null) return new Double[0];
-		return new Double[] {Utils.colorDistance(c1, c2)};
+		return new Double[] {Utils.colorDistance(Utils.convert(c1), Utils.convert(c2))};
 	}
 
 	@Override

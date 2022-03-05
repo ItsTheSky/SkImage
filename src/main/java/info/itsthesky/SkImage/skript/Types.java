@@ -4,6 +4,7 @@ import ch.njol.skript.classes.ClassInfo;
 import ch.njol.skript.classes.Parser;
 import ch.njol.skript.lang.ParseContext;
 import ch.njol.skript.registrations.Classes;
+import info.itsthesky.SkImage.skript.tools.TextInfo;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -38,34 +39,11 @@ public class Types {
 					}
 				})
 		);
-		Classes.registerClass(new ClassInfo<>(Color.class, "imagecolor")
-				.user("imagecolor")
-				.name("imagecolor")
-				.description("Represents an Image Color")
-				.since("1.0")
-				.parser(new Parser<Color>() {
-
-					@Override
-					public String toString(Color o, int flags) {
-						return "color with red " + o.getRed() + ", green " + o.getGreen() + " and blue " + o.getBlue() + " ("+o.getRGB()+")";
-					}
-
-					@Override
-					public String toVariableNameString(Color o) {
-						return "color with red " + o.getRed() + ", green " + o.getGreen() + " and blue " + o.getBlue() + " ("+o.getRGB()+")";
-					}
-
-					@Override
-					public String getVariableNamePattern() {
-						return ".+";
-					}
-
-					@Override
-					public Color parse(String s, ParseContext context) {
-						return null;
-					}
-				})
-		);
+		Classes.registerClass(new ClassInfo<>(TextInfo.class, "textinfo")
+				.user("textinfo")
+				.name("Text Information")
+				.description("Represents a text that contains further information about its style, such as color, font and center values.")
+				.since("1.5"));
 		Classes.registerClass(new ClassInfo<>(Font.class, "font")
 				.user("font")
 				.name("font")

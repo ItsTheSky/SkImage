@@ -9,6 +9,7 @@ import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
+import info.itsthesky.SkImage.skript.tools.Utils;
 import org.bukkit.event.Event;
 
 import java.awt.*;
@@ -22,14 +23,14 @@ public class EffDrawRect extends Effect {
 
 	static {
 		Skript.registerEffect(EffDrawRect.class,
-				"[skimage] draw rect[angle] [with anti[-]aliases] at [the [pixel] location] %number%[ ][,][ ]%number% with [the] size %number%[ ][,][ ]%number% with [(color|colored)] %imagecolor% [[with] [rotation] %-number% degree[s] [angle] [using origin location %-number%,[ ]%-number%]] on [the] [image] %image%");
+				"[skimage] draw rect[angle] [with anti[-]aliases] at [the [pixel] location] %number%[ ][,][ ]%number% with [the] size %number%[ ][,][ ]%number% with [(color|colored)] %color% [[with] [rotation] %-number% degree[s] [angle] [using origin location %-number%,[ ]%-number%]] on [the] [image] %image%");
 	}
 
 	private Expression<Number> exprX, exprY;
 	private Expression<Number> exprSizeX, exprSizeY;
 	private Expression<Number> exprRotation;
 	private Expression<Number> exprRotOriginX, exprRotOriginY;
-	private Expression<Color> exprColor;
+	private Expression<ch.njol.skript.util.Color> exprColor;
 	private Expression<BufferedImage> exprImage;
 	private boolean hasAliases = false;
 
@@ -40,7 +41,7 @@ public class EffDrawRect extends Effect {
 		exprY = (Expression<Number>) exprs[1];
 		exprSizeX = (Expression<Number>) exprs[2];
 		exprSizeY = (Expression<Number>) exprs[3];
-		exprColor = (Expression<Color>) exprs[4];
+		exprColor = (Expression<ch.njol.skript.util.Color>) exprs[4];
 		exprRotation = (Expression<Number>) exprs[5];
 		exprRotOriginX = (Expression<Number>) exprs[6];
 		exprRotOriginY = (Expression<Number>) exprs[7];
@@ -58,7 +59,7 @@ public class EffDrawRect extends Effect {
 		Number rot = exprRotation == null ? null : (exprRotation.getSingle(e) == null ? null : exprRotation.getSingle(e));
 		Number rotPosX = exprRotOriginX == null ? null : (exprRotOriginX.getSingle(e) == null ? null : exprRotOriginX.getSingle(e));
 		Number rotPosY = exprRotOriginY == null ? null : (exprRotOriginY.getSingle(e) == null ? null : exprRotOriginY.getSingle(e));
-		Color color = exprColor.getSingle(e);
+		ch.njol.skript.util.Color color = exprColor.getSingle(e);
 		BufferedImage image = exprImage.getSingle(e);
 		if (x == null || y == null || sizeX == null || sizeY == null || color == null || image == null) return;
 		Graphics2D g2d = image.createGraphics();
@@ -74,7 +75,7 @@ public class EffDrawRect extends Effect {
 				g2d.rotate(Math.toRadians(rot.intValue()), rotPosX.intValue() - x.intValue(), rotPosX.intValue() - y.intValue());
 			}
 		}
-		g2d.setColor(color);
+		g2d.setColor(Utils.convert(color));
 		g2d.fillRect(x.intValue(), y.intValue(), sizeX.intValue(), sizeY.intValue());
 		g2d.dispose();
 	}

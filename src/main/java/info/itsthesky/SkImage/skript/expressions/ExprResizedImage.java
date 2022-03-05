@@ -1,6 +1,7 @@
 package info.itsthesky.SkImage.skript.expressions;
 
 import ch.njol.skript.Skript;
+import ch.njol.skript.config.Node;
 import ch.njol.skript.doc.Description;
 import ch.njol.skript.doc.Examples;
 import ch.njol.skript.doc.Name;
@@ -9,6 +10,7 @@ import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.util.SimpleExpression;
+import ch.njol.skript.log.SkriptLogger;
 import ch.njol.util.Kleenean;
 import info.itsthesky.SkImage.skript.tools.Utils;
 import org.bukkit.event.Event;
@@ -29,10 +31,12 @@ public class ExprResizedImage extends SimpleExpression<BufferedImage> {
 
 	private Expression<BufferedImage> exprImage1;
 	private Expression<Number> exprSizeX, exprSizeY, exprAlgo;
+	private Node node;
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
+		node = SkriptLogger.getNode();
 		exprImage1 = (Expression<BufferedImage>) exprs[0];
 		exprSizeX = (Expression<Number>) exprs[1];
 		exprSizeY = (Expression<Number>) exprs[2];
@@ -53,7 +57,7 @@ public class ExprResizedImage extends SimpleExpression<BufferedImage> {
 					Utils.resizedImage(Utils.copiedImage(image), sizeX.intValue(), sizeY.intValue(), algo.intValue())
 			};
 		} else {
-			Skript.error("The algorithm ID is not valid. Valid ones are 1, 2, 4, 8 and 16 !");
+			Utils.error(node, "The algorithm ID is not valid. Valid ones are 1, 2, 4, 8 and 16 !");
 			return new BufferedImage[0];
 		}
 	}

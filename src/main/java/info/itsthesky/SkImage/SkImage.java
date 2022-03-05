@@ -2,7 +2,6 @@ package info.itsthesky.SkImage;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.SkriptAddon;
-import info.itsthesky.SkImage.skript.Test;
 import info.itsthesky.SkImage.skript.Types;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
@@ -27,65 +26,28 @@ public class SkImage extends JavaPlugin {
 	public void onEnable() {
 
 		INSTANCE = this;
-		Bukkit.getConsoleSender().sendMessage("§3==========================================");
-		Bukkit.getConsoleSender().sendMessage("§6SkImage version §e" + getDescription().getVersion() + "§6 is loading ...");
+		getLogger().info("SkImage v" + getDescription().getVersion() + " is loading ...");
 
-		saveResourceAs("config.yml", "config.yml");
+		getLogger().info("Saving default configuration ...");
+		saveResource("config.yml", true);
 
-		new Test();
-
+		getLogger().info("Checking for Skript ...");
 		pluginManager = Bukkit.getPluginManager();
 		if ((pluginManager.getPlugin("Skript") != null) && Skript.isAcceptRegistrations()) {
+			getLogger().info("Skript found! registering syntaxes ...");
 			SkriptAddon addon = Skript.registerAddon(this);
 			new Types().skImageRegisterTypes();
 			try {
 				addon.loadClasses("info.itsthesky.SkImage.skript");
 			} catch (IOException e) {
-				Skript.error("Wait, this is anormal. Please report this error on GitHub.");
+				getLogger().severe("Wait, this is anormal. Please report this error on GitHub.");
 				e.printStackTrace();
 			}
 		} else {
-			Skript.error("Skript isn't installed or doesn't accept registrations.");
+			getLogger().severe("Skript is not found (or not enabled), cannot load SkImage.");
 			pluginManager.disablePlugin(this);
+			return;
 		}
-		Bukkit.getConsoleSender().sendMessage("§aSkImage doesn't seems to get error while loading!");
-		Bukkit.getConsoleSender().sendMessage("§3==========================================");
-	}
-
-	public void saveResourceAs(String inPath, String outPath) {
-		if (inPath == null || inPath.isEmpty()) {
-			throw new IllegalArgumentException("The input path cannot be null or empty");
-		}
-		InputStream in = getResource(inPath);
-		if (in == null) {
-			throw new IllegalArgumentException("The file "+inPath+" cannot be found in plugin's resources");
-		}
-		if (!getDataFolder().exists() && !getDataFolder().mkdir()) {
-			getLogger().severe("Failed to make the main directory !");
-		}
-		File outFile = new File(getDataFolder(), outPath);
-		try {
-			if (!outFile.exists()) {
-				getLogger().info("The file "+outFile.getName()+" cannot be found, create one for you ...");
-				OutputStream out = new FileOutputStream(outFile);
-				byte[] buf = new byte[1024];
-				int n;
-
-				while ((n = in.read(buf)) >= 0) {
-					out.write(buf, 0, n);
-				}
-
-				out.close();
-				in.close();
-
-				if (!outFile.exists()) {
-					getLogger().severe("Unable to copy file !");
-				} else {
-					getLogger().info("The file "+outFile.getName()+" has been created!");
-				}
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		getLogger().info("SkImage has been enabled correctly!");
 	}
 }

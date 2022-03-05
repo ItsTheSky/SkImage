@@ -24,26 +24,26 @@ public class ExprColoredImage extends SimpleExpression<BufferedImage> {
 
 	static {
 		Skript.registerExpression(ExprColoredImage.class, BufferedImage.class, ExpressionType.SIMPLE,
-				"[skimage] (tinted|colored) [image] %image% with [the] [(color|theme)] %imagecolor%");
+				"[skimage] (tinted|colored) [image] %image% with [the] [(color|theme)] %color%");
 	}
 
 	private Expression<BufferedImage> exprImage;
-	private Expression<Color> exprColor;
+	private Expression<ch.njol.skript.util.Color> exprColor;
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
 		exprImage = (Expression<BufferedImage>) exprs[0];
-		exprColor = (Expression<Color>) exprs[1];
+		exprColor = (Expression<ch.njol.skript.util.Color>) exprs[1];
 		return true;
 	}
 
 	@Override
 	protected BufferedImage[] get(Event e) {
 		BufferedImage image = exprImage.getSingle(e);
-		Color color = exprColor.getSingle(e);
+		ch.njol.skript.util.Color color = exprColor.getSingle(e);
 		if (image == null || color == null) return new BufferedImage[0];
-		return new BufferedImage[] {Utils.tinted(Utils.copiedImage(image), color)};
+		return new BufferedImage[] {Utils.tinted(Utils.copiedImage(image), Utils.convert(color))};
 	}
 
 	@Override

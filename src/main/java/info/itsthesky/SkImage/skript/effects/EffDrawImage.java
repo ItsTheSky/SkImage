@@ -1,6 +1,7 @@
 package info.itsthesky.SkImage.skript.effects;
 
 import ch.njol.skript.Skript;
+import ch.njol.skript.classes.Changer;
 import ch.njol.skript.doc.Description;
 import ch.njol.skript.doc.Examples;
 import ch.njol.skript.doc.Name;
@@ -11,6 +12,7 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.Variable;
 import ch.njol.util.Kleenean;
 import info.itsthesky.SkImage.skript.tools.Utils;
+import info.itsthesky.SkImage.skript.tools.skript.EasyEffect;
 import org.bukkit.event.Event;
 import org.jetbrains.annotations.NotNull;
 
@@ -21,7 +23,7 @@ import java.awt.image.BufferedImage;
 @Description("Draw an Image on another Image")
 @Examples("draw image {_image1} on {_image} at 0, 50")
 @Since("1.0")
-public class EffDrawImage extends Effect {
+public class EffDrawImage extends EasyEffect {
 
 	static {
 		Skript.registerEffect(EffDrawImage.class,
@@ -39,7 +41,7 @@ public class EffDrawImage extends Effect {
 		exprImage2 = (Expression<BufferedImage>) exprs[1];
 		exprX = (Expression<Number>) exprs[2];
 		exprY = (Expression<Number>) exprs[3];
-		return true;
+		return validate(exprImage2);
 	}
 
 	@Override
@@ -52,7 +54,7 @@ public class EffDrawImage extends Effect {
 		Graphics2D g2d = image2.createGraphics();
 		g2d.drawImage(image1, x.intValue(), y.intValue(), null);
 		g2d.dispose();
-		Utils.setSkriptVariable((Variable) exprImage2, image2, e);
+		exprImage2.change(e, new BufferedImage[] {image2}, Changer.ChangeMode.SET);
 	}
 
 	@Override

@@ -10,7 +10,6 @@ import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
-import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 import org.bukkit.event.Event;
 
 import javax.imageio.ImageIO;
@@ -19,6 +18,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Base64;
 
 @Name("Base64 from Image")
 @Description("Get and return the Base64 string of an Image")
@@ -51,7 +51,7 @@ public class ExprBase64FromImage extends SimpleExpression<String> {
 			ioException.printStackTrace();
 		}
 		byte[] bytes = baos.toByteArray();
-		return new String[] {Base64.encode(bytes)};
+		return new String[] {Base64.getEncoder().encodeToString(bytes)};
 	}
 
 	@Override

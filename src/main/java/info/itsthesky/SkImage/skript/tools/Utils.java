@@ -1,11 +1,16 @@
 package info.itsthesky.SkImage.skript.tools;
 
+import ch.njol.skript.Skript;
+import ch.njol.skript.config.Node;
 import ch.njol.skript.lang.SkriptEvent;
 import ch.njol.skript.lang.Variable;
 import ch.njol.skript.lang.VariableString;
+import ch.njol.skript.log.SkriptLogger;
+import ch.njol.skript.util.ColorRGB;
 import ch.njol.skript.variables.Variables;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.event.Event;
+import sun.awt.image.BufferedImageGraphicsConfig;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -75,7 +80,7 @@ public class Utils {
 		return Math.sqrt((((512+rmean)*r*r)>>8) + 4*g*g + (((767-rmean)*b*b)>>8));
 	}
 
-	public static Color mainColor(BufferedImage image) {
+	public static ch.njol.skript.util.Color mainColor(BufferedImage image) {
 		int r = 0, g = 0, b = 0, k = 0, x, y;
 		for (x = 0; x < image.getWidth(); x++)
 			for (y = 0; y < image.getHeight(); k++) {
@@ -84,7 +89,7 @@ public class Utils {
 				g += c.getGreen();
 				b += c.getBlue();
 			}
-		return new Color(r / k, g / k, b / k);
+		return new ColorRGB(r / k, g / k, b / k);
 	}
 
 	public static BufferedImage lighterImage(BufferedImage image, float force) {
@@ -152,5 +157,36 @@ public class Utils {
 			}
 		}
 		return img;
+	}
+
+	public static BufferedImage rotate(BufferedImage image, double angle) {
+		double sin = Math.abs(Math.sin(angle)),
+				cos = Math.abs(Math.cos(angle));
+		int w = image.getWidth(),
+				h = image.getHeight();
+		int neww = (int) Math.floor(w * cos + h * sin),
+				newh = (int) Math.floor(h * cos + w * sin);
+		GraphicsConfiguration gc = image.createGraphics().getDeviceConfiguration();
+		BufferedImage result =
+				gc.createCompatibleImage(neww, newh, Transparency.TRANSLUCENT);
+		Graphics2D g = result.createGraphics();
+		g.translate((neww - w) / 2, (newh - h) / 2);
+		g.rotate(angle, w / 2, h / 2);
+		g.drawRenderedImage(image, null);
+		g.dispose();
+		return result;
+	}
+
+	public static Color convert(ch.njol.skript.util.Color color) {
+		return new Color(color.asBukkitColor().getRed(),
+				color.asBukkitColor().getGreen(),
+				color.asBukkitColor().getBlue());
+	}
+
+	public static void error(Node node, String s) {
+		final Node previous = SkriptLogger.getNode();
+		SkriptLogger.setNode(node);
+		Skript.error(s);
+		SkriptLogger.setNode(previous);
 	}
 }

@@ -29,6 +29,7 @@ import ch.njol.util.StringUtils;
  *
  * @author Tuke_Nuke on 29/03/2017
  */
+@SuppressWarnings("ALL")
 public abstract class EffectSection extends Condition {
     protected static HashMap<Class<? extends EffectSection>, EffectSection> map = new HashMap<>();
     protected SectionNode section = null;

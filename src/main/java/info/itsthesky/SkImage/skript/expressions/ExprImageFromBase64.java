@@ -10,7 +10,6 @@ import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
-import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 import org.bukkit.event.Event;
 
 import javax.imageio.ImageIO;
@@ -18,6 +17,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Base64;
 
 @Name("Image from Base64")
 @Description("Get and return an image from Base64 encoding")
@@ -43,7 +43,7 @@ public class ExprImageFromBase64 extends SimpleExpression<BufferedImage> {
 	protected BufferedImage[] get(Event e) {
 		String base64 = exprBase64.getSingle(e);
 		if (base64 == null) return new BufferedImage[0];
-		InputStream stream = new ByteArrayInputStream(Base64.decode(base64));
+		InputStream stream = new ByteArrayInputStream(Base64.getDecoder().decode(base64));
 		BufferedImage bImage2 = null;
 		try {
 			bImage2 = ImageIO.read(stream);

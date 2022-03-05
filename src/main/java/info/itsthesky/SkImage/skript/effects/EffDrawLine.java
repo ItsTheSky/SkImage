@@ -9,6 +9,7 @@ import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
+import info.itsthesky.SkImage.skript.tools.Utils;
 import org.bukkit.event.Event;
 
 import java.awt.*;
@@ -22,13 +23,13 @@ public class EffDrawLine extends Effect {
 
 	static {
 		Skript.registerEffect(EffDrawLine.class,
-				"[skimage] draw line with [the] (size|width) %number% from %number%[ ][,][ ]%number% to %number%[ ][,][ ]%number% with [(color|colored)] %imagecolor% on [the] [image] %image%");
+				"[skimage] draw line with [the] (size|width) %number% from %number%[ ][,][ ]%number% to %number%[ ][,][ ]%number% with [(color|colored)] %color% on [the] [image] %image%");
 	}
 
 	private Expression<Number> exprSize;
 	private Expression<Number> exprFromX, exprFromY;
 	private Expression<Number> exprToX, exprToY;
-	private Expression<Color> exprColor;
+	private Expression<ch.njol.skript.util.Color> exprColor;
 	private Expression<BufferedImage> exprImage;
 
 	@SuppressWarnings("unchecked")
@@ -39,7 +40,7 @@ public class EffDrawLine extends Effect {
 		exprFromY = (Expression<Number>) exprs[2];
 		exprToX = (Expression<Number>) exprs[3];
 		exprToY = (Expression<Number>) exprs[4];
-		exprColor = (Expression<Color>) exprs[5];
+		exprColor = (Expression<ch.njol.skript.util.Color>) exprs[5];
 		exprImage = (Expression<BufferedImage>) exprs[6];
 		return true;
 	}
@@ -51,11 +52,11 @@ public class EffDrawLine extends Effect {
 		Number toX = exprToX.getSingle(e);
 		Number toY = exprToY.getSingle(e);
 		Number size = exprSize.getSingle(e);
-		Color color = exprColor.getSingle(e);
+		ch.njol.skript.util.Color color = exprColor.getSingle(e);
 		BufferedImage image = exprImage.getSingle(e);
 		if (color == null || image == null || size == null || fromX == null || fromY == null || toX == null || toY == null) return;
 		Graphics2D g2d = image.createGraphics();
-		g2d.setColor(color);
+		g2d.setColor(Utils.convert(color));
 		g2d.setStroke(new BasicStroke(size.intValue()));
 		g2d.drawLine(fromX.intValue(), fromY.intValue(), toX.intValue(), toY.intValue());
 		g2d.dispose();
