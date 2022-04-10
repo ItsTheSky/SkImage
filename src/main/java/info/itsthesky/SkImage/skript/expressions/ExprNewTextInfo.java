@@ -12,7 +12,7 @@ import ch.njol.skript.util.SkriptColor;
 import ch.njol.util.Kleenean;
 import info.itsthesky.SkImage.skript.tools.TextInfo;
 import info.itsthesky.SkImage.skript.tools.Utils;
-import info.itsthesky.SkImage.skript.tools.skript.EasyEffect;
+import info.itsthesky.SkImage.skript.tools.skript.EasyElement;
 import org.bukkit.event.Event;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -32,7 +32,7 @@ public class ExprNewTextInfo extends SimpleExpression<TextInfo> {
 				ExprNewTextInfo.class,
 				TextInfo.class,
 				ExpressionType.COMBINED,
-				"[(create|make)] new text[-info] %string% [with [the] [color] %color%] [with [the] font [style] %font%] [(1¦center[ed] vert[ically])] [(2¦center[ed] hori[zontally])]"
+				"[(create|make)] new text[-info] %string% [with [the] [color] %-color%] [with [the] font [style] %-font%] [(1¦center[ed] vert[ically])] [(2¦center[ed] hori[zontally])]"
 		);
 	}
 
@@ -55,15 +55,14 @@ public class ExprNewTextInfo extends SimpleExpression<TextInfo> {
 	@Nullable
 	@Override
 	protected TextInfo[] get(@NotNull Event e) {
-		final String text = EasyEffect.parseSingle(exprText, e, null);
-		final ch.njol.skript.util.Color color = EasyEffect.parseSingle(exprColor, e, SkriptColor.BLACK);
-		final Font font = EasyEffect.parseSingle(exprFont, e, Font.getFont("Arial"));
-		if (EasyEffect.anyNull(text))
+		final String text = EasyElement.parseSingle(exprText, e, null);
+		final ch.njol.skript.util.Color color = EasyElement.parseSingle(exprColor, e, SkriptColor.BLACK);
+		final Font font = EasyElement.parseSingle(exprFont, e, Font.getFont("Arial"));
+		if (EasyElement.anyNull(text, font))
 			return new TextInfo[0];
 		return new TextInfo[] {new TextInfo(
 				text, font, Utils.convert(color),
-				isCenterV, isCenterH,
-				false, null, null
+				isCenterV, isCenterH
 		)};
 	}
 

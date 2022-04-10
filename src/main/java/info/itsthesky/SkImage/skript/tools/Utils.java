@@ -2,22 +2,19 @@ package info.itsthesky.SkImage.skript.tools;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.config.Node;
-import ch.njol.skript.lang.SkriptEvent;
 import ch.njol.skript.lang.Variable;
-import ch.njol.skript.lang.VariableString;
 import ch.njol.skript.log.SkriptLogger;
 import ch.njol.skript.util.ColorRGB;
 import ch.njol.skript.variables.Variables;
-import net.md_5.bungee.api.chat.TextComponent;
+import ch.njol.util.Pair;
 import org.bukkit.event.Event;
-import sun.awt.image.BufferedImageGraphicsConfig;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.font.FontRenderContext;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.awt.image.ConvolveOp;
 import java.awt.image.Kernel;
-import java.awt.image.RescaleOp;
 import java.util.Arrays;
 
 public class Utils {
@@ -175,6 +172,30 @@ public class Utils {
 		g.drawRenderedImage(image, null);
 		g.dispose();
 		return result;
+	}
+
+	public static Pair<Integer, Integer> getFontSize(Font font, String text) {
+		FontRenderContext frc = new FontRenderContext(new AffineTransform(), true, true);
+		final int textWidth = (int)(font.getStringBounds(text, frc).getWidth());
+		final int textHeight = (int)(font.getStringBounds(text, frc).getHeight());
+		return new Pair<>(textWidth, textHeight);
+	}
+
+	public static void drawString(Graphics g, int x, int y, Object... args) {
+		Font font = g.getFont();
+		int currentOffset = x;
+		int startOffset = x;
+
+		for (int i = 0; i < args.length / 2; i++) {
+			g.setColor((Color) args[i * 2]);
+			g.drawString((String) (args[i * 2 + 1]), currentOffset, y);
+
+			currentOffset += getFontSize(font, ((String) (args[i * 2 + 1]))).getKey();
+
+			if (((String) (args[i * 2 + 1])).contains("\n")) {
+				currentOffset = startOffset;
+			}
+		}
 	}
 
 	public static Color convert(ch.njol.skript.util.Color color) {

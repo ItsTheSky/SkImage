@@ -11,6 +11,7 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
 import org.bukkit.event.Event;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -31,12 +32,12 @@ public class ExprAllFonts extends SimpleExpression<String> {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
+	public boolean init(Expression<?> @NotNull [] exprs, int matchedPattern, @NotNull Kleenean isDelayed, SkriptParser.@NotNull ParseResult parseResult) {
 		return true;
 	}
 
 	@Override
-	protected String[] get(Event e) {
+	protected String[] get(@NotNull Event e) {
 		return GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
 	}
 
@@ -46,12 +47,12 @@ public class ExprAllFonts extends SimpleExpression<String> {
 	}
 
 	@Override
-	public Class<? extends String> getReturnType() {
+	public @NotNull Class<? extends String> getReturnType() {
 		return String.class;
 	}
 
 	@Override
-	public String toString(Event e, boolean debug) {
+	public @NotNull String toString(Event e, boolean debug) {
 		return "all registered font";
 	}
 

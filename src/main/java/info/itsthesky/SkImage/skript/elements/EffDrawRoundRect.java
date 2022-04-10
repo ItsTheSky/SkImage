@@ -1,4 +1,4 @@
-package info.itsthesky.SkImage.skript.effects;
+package info.itsthesky.SkImage.skript.elements;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.doc.Description;
@@ -23,7 +23,7 @@ public class EffDrawRoundRect extends Effect {
 
 	static {
 		Skript.registerEffect(EffDrawRoundRect.class,
-				"[skimage] draw round[ed] rect[angle] [with anti[-]aliases] at [the [pixel] location] %number%[ ][,][ ]%number% with [the] size %number%[ ][,][ ]%number% with [(color|colored)] %color% with arc (size|pixel) %number%[ ][,][ ]%number% on [the] [image] %image%");
+				"[skimage] draw round[ed] rect[angle] [(1¦with anti aliases)] at [the [pixel] location] %number%[ ][,][ ]%number% with [the] size %number%[ ][,][ ]%number% with [(color|colored)] %color% with arc (size|pixel) %number%[ ][,][ ]%number% on [the] [image] %image%");
 	}
 
 	private Expression<Number> exprX;
@@ -47,7 +47,7 @@ public class EffDrawRoundRect extends Effect {
 		exprArcX = (Expression<Number>) exprs[5];
 		exprArcY = (Expression<Number>) exprs[6];
 		exprImage = (Expression<BufferedImage>) exprs[7];
-		hasAliases = parseResult.expr.contains("with anti");
+		hasAliases = parseResult.mark == 1;
 		return true;
 	}
 
@@ -62,15 +62,15 @@ public class EffDrawRoundRect extends Effect {
 		ch.njol.skript.util.Color color = exprColor.getSingle(e);
 		BufferedImage image = exprImage.getSingle(e);
 		if (x == null || y == null || sizeX == null || sizeY == null || color == null || image == null || arcX == null || arcY == null) return;
-		Graphics2D g2d = image.createGraphics();
+		Graphics2D graphics = image.createGraphics();
+		graphics.setColor(Utils.convert(color));
 		if (hasAliases) {
 			RenderingHints rh = new RenderingHints(RenderingHints.KEY_TEXT_ANTIALIASING,
 					RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-			g2d.setRenderingHints(rh);
+			graphics.setRenderingHints(rh);
 		}
-		g2d.setColor(Utils.convert(color));
-		g2d.fillRoundRect(x.intValue(), y.intValue(), sizeX.intValue(), sizeY.intValue(), arcX.intValue(), arcY.intValue());
-		g2d.dispose();
+		graphics.fillRoundRect(x.intValue(), y.intValue(), sizeX.intValue(), sizeY.intValue(), arcX.intValue(), arcY.intValue());
+		graphics.dispose();
 	}
 
 	@Override

@@ -4,7 +4,9 @@ import ch.njol.skript.classes.ClassInfo;
 import ch.njol.skript.classes.Parser;
 import ch.njol.skript.lang.ParseContext;
 import ch.njol.skript.registrations.Classes;
+import info.itsthesky.SkImage.skript.tools.GifSequenceWriter;
 import info.itsthesky.SkImage.skript.tools.TextInfo;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -19,22 +21,22 @@ public class Types {
 				.parser(new Parser<BufferedImage>() {
 
 					@Override
-					public String toString(BufferedImage o, int flags) {
+					public @NotNull String toString(BufferedImage o, int flags) {
 						return o + " image";
 					}
 
 					@Override
-					public String toVariableNameString(BufferedImage o) {
+					public @NotNull String toVariableNameString(BufferedImage o) {
 						return "";
 					}
 
 					@Override
-					public String getVariableNamePattern() {
+					public @NotNull String getVariableNamePattern() {
 						return ".+";
 					}
 
 					@Override
-					public BufferedImage parse(String s, ParseContext context) {
+					public BufferedImage parse(@NotNull String s, @NotNull ParseContext context) {
 						return null;
 					}
 				})
@@ -44,6 +46,11 @@ public class Types {
 				.name("Text Information")
 				.description("Represents a text that contains further information about its style, such as color, font and center values.")
 				.since("1.5"));
+		Classes.registerClass(new ClassInfo<>(GifSequenceWriter.class, "gifmanager")
+				.user("gifmanager")
+				.name("Gif Manager")
+				.description("Represents a gif manager that hold a delay and multiples images to be written into the gif.")
+				.since("1.9"));
 		Classes.registerClass(new ClassInfo<>(Font.class, "font")
 				.user("font")
 				.name("font")
@@ -52,22 +59,22 @@ public class Types {
 				.parser(new Parser<Font>() {
 
 					@Override
-					public String toString(Font o, int flags) {
+					public @NotNull String toString(Font o, int flags) {
+						return toVariableNameString(o);
+					}
+
+					@Override
+					public @NotNull String toVariableNameString(Font o) {
 						return "font with name " + o.getFontName() + " and size " + o.getSize() +  + o.getStyle();
 					}
 
 					@Override
-					public String toVariableNameString(Font o) {
-						return "font with name " + o.getFontName() + " and size " + o.getSize() +  + o.getStyle();
-					}
-
-					@Override
-					public String getVariableNamePattern() {
+					public @NotNull String getVariableNamePattern() {
 						return ".+";
 					}
 
 					@Override
-					public Font parse(String s, ParseContext context) {
+					public Font parse(@NotNull String s, @NotNull ParseContext context) {
 						return null;
 					}
 				})

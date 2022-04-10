@@ -1,4 +1,4 @@
-package info.itsthesky.SkImage.skript.effects;
+package info.itsthesky.SkImage.skript.elements;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.classes.Changer;
@@ -6,13 +6,10 @@ import ch.njol.skript.doc.Description;
 import ch.njol.skript.doc.Examples;
 import ch.njol.skript.doc.Name;
 import ch.njol.skript.doc.Since;
-import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
-import ch.njol.skript.lang.Variable;
 import ch.njol.util.Kleenean;
-import info.itsthesky.SkImage.skript.tools.Utils;
-import info.itsthesky.SkImage.skript.tools.skript.EasyEffect;
+import info.itsthesky.SkImage.skript.tools.skript.EasyElement;
 import org.bukkit.event.Event;
 import org.jetbrains.annotations.NotNull;
 
@@ -23,7 +20,7 @@ import java.awt.image.BufferedImage;
 @Description("Draw an Image on another Image")
 @Examples("draw image {_image1} on {_image} at 0, 50")
 @Since("1.0")
-public class EffDrawImage extends EasyEffect {
+public class EffDrawImage extends EasyElement {
 
 	static {
 		Skript.registerEffect(EffDrawImage.class,

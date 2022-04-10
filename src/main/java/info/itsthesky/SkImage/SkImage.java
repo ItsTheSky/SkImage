@@ -3,11 +3,16 @@ package info.itsthesky.SkImage;
 import ch.njol.skript.Skript;
 import ch.njol.skript.SkriptAddon;
 import info.itsthesky.SkImage.skript.Types;
+import info.itsthesky.SkImage.skript.tools.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.*;
+import java.util.HashMap;
 
 public class SkImage extends JavaPlugin {
 
@@ -29,7 +34,7 @@ public class SkImage extends JavaPlugin {
 		getLogger().info("SkImage v" + getDescription().getVersion() + " is loading ...");
 
 		getLogger().info("Saving default configuration ...");
-		saveResource("config.yml", true);
+		saveResource("config.yml", false);
 
 		getLogger().info("Checking for Skript ...");
 		pluginManager = Bukkit.getPluginManager();

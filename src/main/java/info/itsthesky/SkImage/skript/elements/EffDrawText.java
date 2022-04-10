@@ -1,4 +1,4 @@
-package info.itsthesky.SkImage.skript.effects;
+package info.itsthesky.SkImage.skript.elements;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.doc.Description;
@@ -9,13 +9,11 @@ import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
-import info.itsthesky.SkImage.SkImage;
 import info.itsthesky.SkImage.skript.tools.TextInfo;
-import info.itsthesky.SkImage.skript.tools.skript.EasyEffect;
+import info.itsthesky.SkImage.skript.tools.skript.EasyElement;
 import org.bukkit.event.Event;
 
 import java.awt.*;
-import java.awt.font.TextLayout;
 import java.awt.image.BufferedImage;
 
 @Name("Draw Text on Image")
@@ -27,14 +25,14 @@ public class EffDrawText extends Effect {
 
 	static {
 		Skript.registerEffect(EffDrawText.class,
-				"[skimage] draw [text] %textinfo% [with anti[-]aliases] at [x] %number%[ ](,|and)[ ][y] %number% on [the] [image] %image%");
+				"[skimage] draw [text] %textinfo% [(1¦with anti aliases)] at [x] %number%[ ](,|and)[ ][y] %number% on [the] [image] %image%");
 	}
 
 	private Expression<TextInfo> exprText;
 	private Expression<Font> exprFont;
 	private Expression<Number> exprX, exprY;
 	private Expression<BufferedImage> exprImage;
-	private boolean antiAliases = false;
+	private boolean antiAliases;
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -43,7 +41,7 @@ public class EffDrawText extends Effect {
 		exprX = (Expression<Number>) exprs[1];
 		exprY = (Expression<Number>) exprs[2];
 		exprImage = (Expression<BufferedImage>) exprs[3];
-		antiAliases = parseResult.expr.contains("with anti");
+		antiAliases = parseResult.mark == 1;
 		return true;
 	}
 
@@ -54,7 +52,7 @@ public class EffDrawText extends Effect {
 		Number x = exprX.getSingle(e);
 		Number y = exprY.getSingle(e);
 		BufferedImage image = exprImage.getSingle(e);
-		if (EasyEffect.anyNull(text, x, y, image))
+		if (EasyElement.anyNull(text, x, y, image))
 			return;
 		text.apply(image, antiAliases, x.intValue(), y.intValue());
 	}

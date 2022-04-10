@@ -1,11 +1,16 @@
 package info.itsthesky.SkImage.skript.tools;
 
+import ch.njol.skript.util.chat.ChatMessages;
+import ch.njol.skript.util.chat.MessageComponent;
+import ch.njol.util.Pair;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Store info about a specific text like gradient colors, centering or not, etc...
@@ -19,19 +24,12 @@ public class TextInfo {
 	private boolean centerVertically;
 	private boolean centerHorizontally;
 
-	private boolean hasGradient;
-	private Color startColor;
-	private Color endColor;
-
-	public TextInfo(String text, @NotNull Font font, @NotNull Color uniqueColor, boolean centerVertically, boolean centerHorizontally, boolean hasGradient, Color startColor, Color endColor) {
+	public TextInfo(String text, @NotNull Font font, @NotNull Color uniqueColor, boolean centerVertically, boolean centerHorizontally) {
 		this.text = text;
 		this.font = font;
 		this.uniqueColor = uniqueColor;
 		this.centerVertically = centerVertically;
 		this.centerHorizontally = centerHorizontally;
-		this.hasGradient = hasGradient;
-		this.startColor = startColor;
-		this.endColor = endColor;
 	}
 
 	public void apply(BufferedImage image, boolean antiAliases, int x, int y) {
@@ -45,17 +43,32 @@ public class TextInfo {
 		graphics.setColor(getUniqueColor());
 		graphics.setFont(getFont());
 
-		FontRenderContext frc = new FontRenderContext(new AffineTransform(), true, true);
-		final int textWidth = (int)(getFont().getStringBounds(getText(), frc).getWidth());
-		final int textHeight = (int)(getFont().getStringBounds(getText(), frc).getHeight());
+		final int textWidth = Utils.getFontSize(getFont(), ChatMessages.stripStyles(getText())).getFirst();
+		final int textHeight = Utils.getFontSize(getFont(), ChatMessages.stripStyles(getText())).getSecond();
 
 		if (isCenterVertically())
-			y = image.getHeight() / 2 - textHeight / 2;
+			y = (image.getHeight() / 2 - textHeight / 2) + y;
 		if (isCenterHorizontally())
-			x = image.getWidth() / 2 - textWidth / 2;
+			x = (image.getWidth() / 2 - textWidth / 2) + x;
 
-		graphics.drawString(getText(), x, y);
+		drawText(graphics, x, y);
 		graphics.dispose();
+	}
+
+	public LinkedList<Object> parse(String input) {
+		final List<MessageComponent> components = ChatMessages.parse(getText());
+		final LinkedList<Object> arguments = new LinkedList<>();
+		for (MessageComponent component : components) {
+			if (component.text.isEmpty())
+				continue;
+			arguments.add(component.color == null ? getUniqueColor() : component.color.getColor());
+			arguments.add(component.text.replace("§x", ""));
+		}
+		return arguments;
+	}
+
+	public void drawText(Graphics2D graphics, int x, int y) {
+		Utils.drawString(graphics, x, y, parse(getText()).toArray());
 	}
 
 	public String getText() {
@@ -94,27 +107,8 @@ public class TextInfo {
 		this.uniqueColor = uniqueColor;
 	}
 
-	public boolean isHasGradient() {
-		return hasGradient;
-	}
-
-	public void setHasGradient(boolean hasGradient) {
-		this.hasGradient = hasGradient;
-	}
-
-	public Color getStartColor() {
-		return startColor;
-	}
-
-	public void setStartColor(Color startColor) {
-		this.startColor = startColor;
-	}
-
-	public Color getEndColor() {
-		return endColor;
-	}
-
-	public void setEndColor(Color endColor) {
-		this.endColor = endColor;
+	@Override
+	public String toString() {
+		return text + " with font " + font.getFontName();
 	}
 }

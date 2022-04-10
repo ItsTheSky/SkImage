@@ -10,7 +10,7 @@ import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
-import info.itsthesky.SkImage.skript.tools.skript.EasyEffect;
+import info.itsthesky.SkImage.skript.tools.skript.EasyElement;
 import org.bukkit.event.Event;
 import org.jetbrains.annotations.NotNull;
 
@@ -45,7 +45,7 @@ public class ExprImageRounded extends SimpleExpression<BufferedImage> {
 	@Override
 	protected BufferedImage[] get(@NotNull Event e) {
 		final BufferedImage image = exprImage.getSingle(e);
-		final Number angle = EasyEffect.parseSingle(exprAngle, e, null);
+		final Number angle = EasyElement.parseSingle(exprAngle, e, null);
 		if (image == null) return new BufferedImage[0];
 		int w = image.getWidth();
 		int h = image.getHeight();

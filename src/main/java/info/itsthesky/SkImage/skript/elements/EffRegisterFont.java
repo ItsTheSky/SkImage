@@ -1,4 +1,4 @@
-package info.itsthesky.SkImage.skript.effects;
+package info.itsthesky.SkImage.skript.elements;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.doc.Description;
